@@ -2,6 +2,8 @@
 
 An evidence-backed build-versus-outreach map for 100 app integrations. This repository is the source for a two-minute case study and the reproducible research agent behind it.
 
+**[View the live case study](https://faishal882.github.io/composio-toolkit-radar/)**
+
 ## What is here
 
 - `index.html` — the single-page case study and interactive 100-app matrix.

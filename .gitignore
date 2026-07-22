@@ -2,3 +2,4 @@
 node_modules/
 artifacts/live/
 agent/.composio-run-*.ts
+.gstack/
