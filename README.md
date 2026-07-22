@@ -9,15 +9,18 @@ An evidence-backed build-versus-outreach map for 100 app integrations. This repo
 - `index.html` — the single-page case study and interactive 100-app matrix.
 - `data/apps.json` — the reviewed, machine-readable final dataset.
 - `data/verification.json` — the 20-app, 160-claim accuracy audit.
-- `agent/research.ts` — the Composio-powered discovery agent.
+- `agent/research.py` — the resumable Composio-powered discovery agent.
 - `artifacts/research.raw.json` — immutable first-pass answers and citations for all 100 apps.
-- `scripts/curate.mjs` — the explicit human-review layer that fixes entity collisions and unsupported claims.
-- `scripts/validate.mjs` — schema, count, URL, and consistency gates.
-- `scripts/check-evidence.mjs` — live reachability checks for every primary evidence URL.
+- `artifacts/research.latest.json` — output from the stronger Python agent, with evidence scores and a review queue.
+- `data/curation.json` — the explicit human-review decisions that fix collisions and unsupported claims.
+- `scripts/curate.py` — materializes reviewed decisions while keeping the raw artifact immutable.
+- `scripts/validate.py` — schema, taxonomy, audit-math, URL, and cross-file consistency gates.
+- `scripts/check_evidence.py` — concurrent reachability checks for every primary evidence URL.
+- `tests/test_research_agent.py` — regression tests for identity collisions and CLI envelopes.
 
 ## Run the case study
 
-Requirements: Python 3 for the zero-dependency local server.
+Requirements: Python 3.10+ for the zero-dependency local server and pipeline.
 
 ```bash
 npm run serve
@@ -45,20 +48,28 @@ Run a cheap smoke test without overwriting the included raw artifact:
 npm run research -- --limit 3 --output artifacts/live/smoke.json
 ```
 
-The agent calls `COMPOSIO_SEARCH_WEB` with an evidence-first prompt, four apps at a time. It stores the answer and every returned citation before any human editing. Concurrency is capped at five to reduce throttling.
+The Python agent calls the signed-in Composio CLI's `COMPOSIO_SEARCH_WEB` tool. It locks each app to expected provider domains, scores citations, retries transient failures with backoff, writes an atomic checkpoint after every completed app, and sends weak or mismatched results to `needs_human_review`. No Composio API key is copied into this repository.
+
+The included upgraded run completed 100/100 requests with no request failures. It auto-cleared 54 apps with official technical evidence and held 46 for review. This is deliberately conservative: an official vendor blog can establish identity, but only provider technical documentation can auto-clear API and authentication claims.
+
+Resume an interrupted run without repeating completed IDs:
+
+```bash
+npm run research -- --limit 100 --resume
+```
 
 ## Research and verification loop
 
 ```text
 100 exact entities
       ↓
-Composio discovery (provider-owned sources requested)
+Python orchestration + Composio discovery
       ↓
-immutable raw answers + citations
+identity locks + scored citations + checkpoints
       ↓
-entity/domain/auth/access/MCP review
+explicit human-review queue
       ↓
-100-row schema and evidence checks
+immutable curation decisions + 100-row gates
       ↓
 20-app claim-level audit
 ```
@@ -77,12 +88,13 @@ The most important failure classes were:
 
 ```bash
 npm run validate
+npm test
 npm run check:evidence
 ```
 
-`validate` fails on missing rows/fields, duplicate IDs or names, invalid evidence URLs, empty auth/evidence, or vague blockers. `check:evidence` performs a live GET against all 100 primary sources and writes `artifacts/evidence-check.json`.
+`validate` fails on missing rows/fields, order or taxonomy drift, duplicate IDs or names, invalid evidence URLs, invalid enum values, audit-math inconsistencies, empty auth/evidence, or vague blockers. Unit tests protect the collision guards and Composio response parser. `check:evidence` performs a live GET against all 100 primary sources and writes `artifacts/evidence-check.json`.
 
-Some documentation providers return 403/429 to automated clients or fail Node fetch while loading in a browser. Those cases are retained in the evidence report instead of being silently counted as healthy.
+Some documentation providers return 403/429 to automated clients while loading in a browser. Those cases are retained in the evidence report instead of being silently counted as healthy.
 
 ## Dataset fields
 

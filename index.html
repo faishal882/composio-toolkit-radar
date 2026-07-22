@@ -117,9 +117,9 @@
         <div class="workflow" aria-label="Research workflow">
           <div class="workflow-step"><span>1</span><strong>Seed</strong><p>100 exact entities, categories, and vendor hints from the brief.</p></div>
           <div class="workflow-arrow" aria-hidden="true">→</div>
-          <div class="workflow-step"><span>2</span><strong>Discover</strong><p>Four parallel Composio Search calls, biased to provider-owned docs.</p></div>
+          <div class="workflow-step"><span>2</span><strong>Discover</strong><p>Python runs parallel Composio Search calls with retries and atomic checkpoints.</p></div>
           <div class="workflow-arrow" aria-hidden="true">→</div>
-          <div class="workflow-step"><span>3</span><strong>Gate</strong><p>Schema, URL, entity, evidence-domain, and unknown-value checks.</p></div>
+          <div class="workflow-step"><span>3</span><strong>Gate</strong><p>Entity locks and citation scores route weak evidence to human review.</p></div>
           <div class="workflow-arrow" aria-hidden="true">→</div>
           <div class="workflow-step"><span>4</span><strong>Review</strong><p>Stratified sample plus an adversarial queue for collisions and gates.</p></div>
         </div>
@@ -128,13 +128,13 @@
           <div>
             <p class="proof-label">Runnable trigger</p>
             <code>npm run research -- --limit 100 --concurrency 4</code>
-            <p>The run completed 100/100 searches and preserved answers plus citations in a 333 KB raw artifact. No paid app accounts were required.</p>
+            <p>The original run completed 100/100 searches. The upgraded Python agent adds retries, resumable checkpoints, domain guards, evidence scores, and a review queue.</p>
           </div>
           <div class="agent-output" aria-label="Agent run output">
             <span>COMPOSIO_SEARCH_WEB</span>
             <span>4 concurrent workers</span>
-            <span>100 / 100 researched</span>
-            <span>0 request failures</span>
+            <span>54 / 100 auto-cleared</span>
+            <span>46 / 100 held for review</span>
           </div>
         </div>
 

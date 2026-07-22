@@ -4,9 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "research": "composio run --file agent/research.ts --",
-    "validate": "node scripts/validate.mjs",
-    "check:evidence": "node scripts/check-evidence.mjs",
+    "research": "python3 agent/research.py",
+    "curate": "python3 scripts/curate.py",
+    "validate": "python3 scripts/validate.py",
+    "check:evidence": "python3 scripts/check_evidence.py",
+    "test": "python3 -m unittest discover -s tests -v",
     "serve": "python3 -m http.server 4173"
   }
 }

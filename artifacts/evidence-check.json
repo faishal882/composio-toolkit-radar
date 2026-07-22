@@ -1,10 +1,10 @@
 {
   "summary": {
-    "checkedAt": "2026-07-22T19:31:44.545Z",
+    "checkedAt": "2026-07-22T20:49:56.033972Z",
     "total": 100,
     "reachable": 99,
-    "success2xx": 98,
-    "redirectsOrRestricted": 1,
+    "success2xx": 95,
+    "redirectsOrRestricted": 4,
     "failed": 1
   },
   "results": [
@@ -12,10 +12,10 @@
       "id": 1,
       "name": "Salesforce",
       "url": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_oauth_and_connected_apps.htm",
-      "status": 200,
+      "status": 403,
       "finalUrl": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_oauth_and_connected_apps.htm",
       "reachable": true,
-      "note": ""
+      "note": "Browser-accessible but automated request restricted"
     },
     {
       "id": 2,
@@ -283,7 +283,7 @@
       "name": "Google Ads",
       "url": "https://developers.google.com/google-ads/api/docs/concepts/call-structure",
       "status": 200,
-      "finalUrl": "https://developers.google.com/google-ads/api/docs/concepts/call-structure?hl=th",
+      "finalUrl": "https://developers.google.com/google-ads/api/docs/concepts/call-structure",
       "reachable": true,
       "note": ""
     },
@@ -399,10 +399,10 @@
       "id": 44,
       "name": "Salesforce Commerce Cloud",
       "url": "https://developer.salesforce.com/docs/commerce/b2c-commerce/guide/scapi-get-started.html",
-      "status": 200,
+      "status": 403,
       "finalUrl": "https://developer.salesforce.com/docs/commerce/b2c-commerce/guide/scapi-get-started.html",
       "reachable": true,
-      "note": ""
+      "note": "Browser-accessible but automated request restricted"
     },
     {
       "id": 45,
@@ -490,8 +490,9 @@
       "name": "MrScraper",
       "url": "https://docs.mrscraper.com/docs/getting-started/mcp-server",
       "status": 0,
+      "finalUrl": "https://docs.mrscraper.com/docs/getting-started/mcp-server",
       "reachable": false,
-      "note": "fetch failed"
+      "note": "<urlopen error [Errno 101] Network is unreachable>"
     },
     {
       "id": 55,
@@ -830,10 +831,10 @@
       "id": 92,
       "name": "Otter AI",
       "url": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
-      "status": 200,
+      "status": 403,
       "finalUrl": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
       "reachable": true,
-      "note": ""
+      "note": "Browser-accessible but automated request restricted"
     },
     {
       "id": 93,

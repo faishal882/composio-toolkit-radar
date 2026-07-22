@@ -3,3 +3,5 @@ node_modules/
 artifacts/live/
 agent/.composio-run-*.ts
 .gstack/
+__pycache__/
+*.py[cod]
