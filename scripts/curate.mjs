@@ -109,6 +109,7 @@ Grain|AI meeting recording, transcripts, and conversation intelligence|PAT; OAut
 
 const records = source.split("\n").map((line) => line.split("|"));
 if (records.length !== 100) throw new Error(`Expected 100 curated records, got ${records.length}`);
+const mediumConfidenceApps = new Set(["Fanbasis", "Paygent Connect", "iPayX"]);
 
 const rows = records.map((fields, index) => {
   const [name, description, auth, access, api, mcp, verdict, blocker, overrideUrl] = fields;
@@ -119,12 +120,7 @@ const rows = records.map((fields, index) => {
   const fallback = rawRow.citations.find((item) => /^https:\/\//.test(item.url ?? ""));
   const evidenceUrl = overrideUrl || fallback?.url;
   if (!evidenceUrl) throw new Error(`No evidence URL for ${name}`);
-  const confidence =
-    verdict === "No public API" || access === "Contact sales"
-      ? "Medium"
-      : evidenceUrl.includes("github.com") && access !== "Open source"
-        ? "Medium"
-        : "High";
+  const confidence = mediumConfidenceApps.has(name) ? "Medium" : "High";
 
   return {
     id: index + 1,

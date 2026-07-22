@@ -450,7 +450,7 @@
         "url": "https://developer.gladly.com/rest/index.html"
       }
     ],
-    "confidence": "Medium",
+    "confidence": "High",
     "checkedAt": "2026-07-23"
   },
   {
@@ -540,7 +540,7 @@
         "url": "https://github.com/larksuite/lark-openapi-mcp/blob/main/README.md"
       }
     ],
-    "confidence": "Medium",
+    "confidence": "High",
     "checkedAt": "2026-07-23"
   },
   {
@@ -1331,7 +1331,7 @@
         "url": "https://docs.waterfall.io/v1/introduction"
       }
     ],
-    "confidence": "Medium",
+    "confidence": "High",
     "checkedAt": "2026-07-23"
   },
   {
@@ -1376,7 +1376,7 @@
         "url": "https://docs.github.com/en/rest"
       }
     ],
-    "confidence": "Medium",
+    "confidence": "High",
     "checkedAt": "2026-07-23"
   },
   {
@@ -1883,7 +1883,7 @@
         "url": "https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md"
       }
     ],
-    "confidence": "Medium",
+    "confidence": "High",
     "checkedAt": "2026-07-23"
   },
   {
@@ -2038,7 +2038,7 @@
         "url": "https://pitchbook.com/data/api"
       }
     ],
-    "confidence": "Medium",
+    "confidence": "High",
     "checkedAt": "2026-07-23"
   },
   {
