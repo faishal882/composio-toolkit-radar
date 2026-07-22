@@ -1,0 +1,12 @@
+{
+  "name": "composio-toolkit-radar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "research": "composio run --file agent/research.ts --",
+    "validate": "node scripts/validate.mjs",
+    "check:evidence": "node scripts/check-evidence.mjs",
+    "serve": "python3 -m http.server 4173"
+  }
+}
