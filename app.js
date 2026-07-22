@@ -1,6 +1,7 @@
-const [apps, verification] = await Promise.all([
+const [apps, verification, patterns] = await Promise.all([
   fetch("data/apps.json").then((response) => response.json()),
   fetch("data/verification.json").then((response) => response.json()),
+  fetch("data/patterns.json").then((response) => response.json()),
 ]);
 
 const $ = (selector) => document.querySelector(selector);
@@ -60,18 +61,24 @@ $("#filters").addEventListener("input", applyFilters);
 $("#filters").addEventListener("reset", () => requestAnimationFrame(applyFilters));
 renderRows(apps);
 
-const categoryStats = Object.values(apps.reduce((map, app) => {
-  map[app.category] ??= { name: app.category, total: 0, ready: 0 };
-  map[app.category].total += 1;
-  if (app.verdict === "Build now") map[app.category].ready += 1;
-  return map;
-}, {})).sort((a, b) => b.ready - a.ready || a.name.localeCompare(b.name));
+const categoryStats = [...patterns.categories]
+  .sort((a, b) => b.buildNow - a.buildNow || a.category.localeCompare(b.category));
 
 $("#category-bars").innerHTML = categoryStats.map((item) => `
   <div class="category-row">
-    <span>${item.name}</span>
-    <div class="category-track"><i style="--ready: ${item.ready * 10}%"></i></div>
-    <strong>${item.ready}/10</strong>
+    <span>${item.category}</span>
+    <div class="category-track"><i style="--ready: ${item.buildNow * 10}%"></i></div>
+    <strong>${item.buildNow}/10</strong>
+  </div>
+`).join("");
+
+const blockerStats = Object.entries(patterns.blockers).slice(0, 6);
+const blockerMax = Math.max(...blockerStats.map(([, count]) => count));
+$("#blocker-bars").innerHTML = blockerStats.map(([name, count]) => `
+  <div class="category-row">
+    <span>${name}</span>
+    <div class="category-track"><i style="--ready: ${(count / blockerMax) * 100}%"></i></div>
+    <strong>${count}</strong>
   </div>
 `).join("");
 

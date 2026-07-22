@@ -2,36 +2,4053 @@
   "method": {
     "sampleSize": 20,
     "claimFieldsPerApp": 8,
-    "claimFields": ["identity", "category", "description", "auth", "access", "api", "mcp", "verdict"],
+    "claimFields": [
+      "identity",
+      "category",
+      "description",
+      "auth",
+      "access",
+      "api",
+      "mcp",
+      "verdict"
+    ],
     "cohorts": {
-      "stratified": "One app from each category, selected before manual review.",
+      "stratified": "One app per category, selected before manual review.",
       "adversarial": "Ten low-signal, collision-prone, gated, or contradictory results flagged from the raw run."
     },
-    "scoring": "One point only when a provider-owned source directly supports the field. Unknown or indirect evidence scores zero.",
-    "firstPass": {"supportedClaims": 102, "totalClaims": 160, "accuracy": 63.8},
-    "finalPass": {"supportedClaims": 156, "totalClaims": 160, "accuracy": 97.5},
-    "remainingUncertainty": "Four claims remain intentionally medium-confidence: Fanbasis access breadth, Paygent documentation breadth, and iPayX auth/API availability."
+    "scoring": "One point only when provider-owned evidence directly supports the field; unknown or indirect evidence scores zero.",
+    "scoreLabel": "Verification-set support rate; the adversarial half means this is not a population-wide accuracy estimate.",
+    "firstPass": {
+      "supportedClaims": 101,
+      "totalClaims": 160,
+      "accuracy": 63.1
+    },
+    "finalPass": {
+      "supportedClaims": 156,
+      "totalClaims": 160,
+      "accuracy": 97.5
+    },
+    "cohortScores": {
+      "stratified": {
+        "first": 79,
+        "final": 80,
+        "total": 80,
+        "firstAccuracy": 98.8,
+        "finalAccuracy": 100.0
+      },
+      "adversarial": {
+        "first": 22,
+        "final": 76,
+        "total": 80,
+        "firstAccuracy": 27.5,
+        "finalAccuracy": 95.0
+      }
+    },
+    "remainingUncertainty": "Four claims remain intentionally unsupported: Fanbasis access breadth, Paygent API breadth, and iPayX auth/API availability.",
+    "humanSignoff": "The repository preserves the ledger and browser checks; the submitter must complete the short manual signoff in MANUAL_COMPLETION.md."
   },
   "samples": [
-    {"id":4,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"Attio auth, REST surface, webhooks, and official MCP were directly documented."},
-    {"id":12,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"Intercom's private-token, public OAuth, REST, and remote MCP paths matched docs."},
-    {"id":21,"cohort":"stratified","first":7,"final":8,"result":"corrected","note":"Slack's API result was sound; review added the 2026 official MCP and admin-install constraint."},
-    {"id":31,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"Google Ads requires OAuth plus a developer token and reviewed production access."},
-    {"id":43,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"BigCommerce documents REST, GraphQL, OAuth tokens, dev stores, and hosted MCP."},
-    {"id":53,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"Ahrefs key/OAuth paths and plan-gated production access were supported."},
-    {"id":61,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"GitHub REST, GraphQL, token types, and official MCP were directly supported."},
-    {"id":71,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"Notion internal tokens, public OAuth, REST, and hosted MCP matched docs."},
-    {"id":81,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"Stripe API keys, Connect OAuth, REST, and hosted MCP matched docs."},
-    {"id":92,"cohort":"stratified","first":8,"final":8,"result":"hit","note":"Otter's 2026 Enterprise REST API and OAuth-authenticated MCP were verified in its Help Center."},
-    {"id":8,"cohort":"adversarial","first":1,"final":8,"result":"corrected","note":"Close retrieved Stripe and monday.com sources. Entity locking replaced the entire result with Close docs."},
-    {"id":17,"cohort":"adversarial","first":1,"final":8,"result":"corrected","note":"Plain also retrieved unrelated MCP vendors. Provider-domain enforcement recovered Plain's GraphQL API."},
-    {"id":37,"cohort":"adversarial","first":6,"final":8,"result":"corrected","note":"systeme.io auth/API were right, but a community GitHub MCP was mislabeled as first-party."},
-    {"id":50,"cohort":"adversarial","first":3,"final":7,"result":"uncertain","note":"Fanbasis search relied on unofficial packages and Zapier MCP. Official docs are login-gated, so MCP was reset to none found."},
-    {"id":58,"cohort":"adversarial","first":1,"final":8,"result":"corrected","note":"Sherlock resolved to an LCL payment product. The assignment target is the open-source username CLI."},
-    {"id":84,"cohort":"adversarial","first":1,"final":7,"result":"uncertain","note":"Paygent Connect resolved to an unrelated AI-billing product. The product site supports REST, bearer keys, webhooks, and contact sales."},
-    {"id":85,"cohort":"adversarial","first":1,"final":6,"result":"uncertain","note":"iPayX was conflated with IXOPAY. No public developer docs were located, so auth/API remain unknown rather than inferred."},
-    {"id":91,"cohort":"adversarial","first":3,"final":8,"result":"corrected","note":"The agent checked consumer NotebookLM only; review found Gemini Notebook Enterprise's licensed preview API."},
-    {"id":98,"cohort":"adversarial","first":2,"final":8,"result":"corrected","note":"Mermaid CLI drifted to the separate Mermaid Chart SaaS. The target is a local MIT CLI with no auth."},
-    {"id":99,"cohort":"adversarial","first":3,"final":8,"result":"corrected","note":"The agent researched youtubetranscript.dev instead of transcriptapi.com. Domain locking fixed API and MCP evidence."}
+    {
+      "id": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "Attio auth, REST surface, webhooks, and official MCP were directly documented.",
+      "sourceUrls": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      }
+    },
+    {
+      "id": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "Intercom's private-token, public OAuth, REST, and remote MCP paths matched docs.",
+      "sourceUrls": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      }
+    },
+    {
+      "id": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "first": 7,
+      "final": 8,
+      "result": "corrected",
+      "note": "Slack's API result was sound; review added the official MCP and admin-install constraint.",
+      "sourceUrls": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      }
+    },
+    {
+      "id": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "Google Ads requires OAuth plus a developer token and reviewed production access.",
+      "sourceUrls": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      }
+    },
+    {
+      "id": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "BigCommerce documents REST, GraphQL, OAuth tokens, dev stores, and hosted MCP.",
+      "sourceUrls": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      }
+    },
+    {
+      "id": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "Ahrefs key/OAuth paths and plan-gated production access were supported.",
+      "sourceUrls": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      }
+    },
+    {
+      "id": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "GitHub REST, GraphQL, token types, and official MCP were directly supported.",
+      "sourceUrls": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      }
+    },
+    {
+      "id": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "Notion internal tokens, public OAuth, REST, and hosted MCP matched docs.",
+      "sourceUrls": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      }
+    },
+    {
+      "id": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "Stripe API keys, Connect OAuth, REST, and hosted MCP matched docs.",
+      "sourceUrls": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      }
+    },
+    {
+      "id": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "first": 8,
+      "final": 8,
+      "result": "hit",
+      "note": "Otter's Enterprise REST API and OAuth-authenticated MCP were verified in its Help Center.",
+      "sourceUrls": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      }
+    },
+    {
+      "id": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "first": 1,
+      "final": 8,
+      "result": "corrected",
+      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs.",
+      "sourceUrls": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      }
+    },
+    {
+      "id": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "first": 1,
+      "final": 8,
+      "result": "corrected",
+      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product.",
+      "sourceUrls": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      }
+    },
+    {
+      "id": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "first": 6,
+      "final": 8,
+      "result": "corrected",
+      "note": "systeme.io auth/API were right, but a community MCP was initially labeled first-party.",
+      "sourceUrls": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      }
+    },
+    {
+      "id": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "first": 3,
+      "final": 7,
+      "result": "uncertain",
+      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain.",
+      "sourceUrls": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      }
+    },
+    {
+      "id": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "first": 1,
+      "final": 8,
+      "result": "corrected",
+      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI.",
+      "sourceUrls": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      }
+    },
+    {
+      "id": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "first": 1,
+      "final": 7,
+      "result": "uncertain",
+      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain.",
+      "sourceUrls": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      }
+    },
+    {
+      "id": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "first": 1,
+      "final": 6,
+      "result": "uncertain",
+      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API.",
+      "sourceUrls": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      }
+    },
+    {
+      "id": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "first": 3,
+      "final": 8,
+      "result": "corrected",
+      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API.",
+      "sourceUrls": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      }
+    },
+    {
+      "id": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "first": 2,
+      "final": 8,
+      "result": "corrected",
+      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI.",
+      "sourceUrls": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      }
+    },
+    {
+      "id": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "first": 3,
+      "final": 8,
+      "result": "corrected",
+      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com.",
+      "sourceUrls": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      }
+    }
+  ],
+  "claimAudit": [
+    {
+      "appId": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Attio",
+      "sources": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "CRM & Sales",
+      "sources": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Flexible, data-model-driven CRM",
+      "sources": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "OAuth 2.0; API key",
+      "sources": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST",
+      "sources": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 4,
+      "app": "Attio",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://attio.com/platform/developers"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 4
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Intercom",
+      "sources": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Support & Helpdesk",
+      "sources": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Customer messaging, support, and engagement",
+      "sources": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "OAuth 2.0; access token",
+      "sources": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST",
+      "sources": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 12,
+      "app": "Intercom",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 12
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Slack",
+      "sources": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Communications",
+      "sources": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Team messaging and collaboration workspace",
+      "sources": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "OAuth 2.0",
+      "sources": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST + Events",
+      "sources": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Slack's API result was sound; review added the official MCP and admin-install constraint."
+    },
+    {
+      "appId": 21,
+      "app": "Slack",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://docs.slack.dev/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 21
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Google Ads",
+      "sources": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Marketing & Ads",
+      "sources": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Programmatic campaign management and reporting",
+      "sources": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "OAuth 2.0; developer token",
+      "sources": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Review required",
+      "sources": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST + gRPC",
+      "sources": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "None found",
+      "sources": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 31,
+      "app": "Google Ads",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build with constraints",
+      "sources": [
+        "https://developers.google.com/google-ads/api/docs/concepts/call-structure"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 31
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "BigCommerce",
+      "sources": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Ecommerce",
+      "sources": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Hosted ecommerce platform for stores and channels",
+      "sources": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "OAuth 2.0; access token",
+      "sources": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST + GraphQL",
+      "sources": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 43,
+      "app": "BigCommerce",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://docs.bigcommerce.com/.md"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 43
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Ahrefs",
+      "sources": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Data, SEO & Scraping",
+      "sources": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "SEO backlink, keyword, and site data",
+      "sources": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "API key; OAuth 2.0",
+      "sources": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Plan/admin",
+      "sources": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST",
+      "sources": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 53,
+      "app": "Ahrefs",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build with constraints",
+      "sources": [
+        "https://docs.ahrefs.com/en/ahrefs-connect/docs/oauth-guide"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 53
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "GitHub",
+      "sources": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Developer & Infra",
+      "sources": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Code hosting, collaboration, and software delivery",
+      "sources": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "OAuth 2.0; app/PAT token",
+      "sources": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST + GraphQL",
+      "sources": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 61,
+      "app": "GitHub",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://docs.github.com/en/rest"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 61
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Notion",
+      "sources": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Productivity",
+      "sources": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Collaborative docs, wikis, and structured databases",
+      "sources": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Bearer token; OAuth 2.0",
+      "sources": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST",
+      "sources": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 71,
+      "app": "Notion",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://developers.notion.com/guides/get-started/authorization"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 71
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Stripe",
+      "sources": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Finance & Fintech",
+      "sources": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Payments, billing, and financial infrastructure",
+      "sources": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "API key; OAuth 2.0",
+      "sources": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST",
+      "sources": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 81,
+      "app": "Stripe",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 81
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Otter AI",
+      "sources": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "AI, Research & Media",
+      "sources": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Meeting recording, transcription, and knowledge search",
+      "sources": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Bearer API key; MCP OAuth",
+      "sources": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "field": "access",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Plan/admin",
+      "sources": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST",
+      "sources": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "field": "mcp",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 92,
+      "app": "Otter AI",
+      "cohort": "stratified",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build with constraints",
+      "sources": [
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 92
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Close",
+      "sources": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+    },
+    {
+      "appId": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "CRM & Sales",
+      "sources": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Sales CRM with calling, email, and automation",
+      "sources": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+    },
+    {
+      "appId": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "API key; OAuth 2.0",
+      "sources": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+    },
+    {
+      "appId": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Plan/admin",
+      "sources": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+    },
+    {
+      "appId": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "REST",
+      "sources": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+    },
+    {
+      "appId": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "None found",
+      "sources": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+    },
+    {
+      "appId": 8,
+      "app": "Close",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Build with constraints",
+      "sources": [
+        "https://developer.close.com/topics/authentication/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 8
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+    },
+    {
+      "appId": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Plain",
+      "sources": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+    },
+    {
+      "appId": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Support & Helpdesk",
+      "sources": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "API-first B2B customer support platform",
+      "sources": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+    },
+    {
+      "appId": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Bearer token",
+      "sources": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+    },
+    {
+      "appId": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+    },
+    {
+      "appId": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "GraphQL",
+      "sources": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+    },
+    {
+      "appId": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "None found",
+      "sources": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+    },
+    {
+      "appId": 17,
+      "app": "Plain",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://www.plain.com/docs/graphql/introduction"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 17
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+    },
+    {
+      "appId": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "systeme.io",
+      "sources": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Marketing & Ads",
+      "sources": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Funnels, email, courses, and online-business automation",
+      "sources": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "API key",
+      "sources": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Plan/admin",
+      "sources": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "systeme.io auth/API were right, but a community MCP was initially labeled first-party."
+    },
+    {
+      "appId": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST + Webhooks",
+      "sources": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "None found",
+      "sources": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "systeme.io auth/API were right, but a community MCP was initially labeled first-party."
+    },
+    {
+      "appId": 37,
+      "app": "systeme.io",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Build with constraints",
+      "sources": [
+        "https://developer.systeme.io/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 37
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Fanbasis",
+      "sources": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Ecommerce",
+      "sources": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Creator storefronts, payments, and digital experiences",
+      "sources": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "API key",
+      "sources": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+    },
+    {
+      "appId": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": false,
+      "finalValue": "Contact sales",
+      "sources": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+    },
+    {
+      "appId": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "REST + Webhooks",
+      "sources": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+    },
+    {
+      "appId": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "None found",
+      "sources": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+    },
+    {
+      "appId": 50,
+      "app": "Fanbasis",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Outreach first",
+      "sources": [
+        "https://dev-docs.fanbasis.com/login.html"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 50
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+    },
+    {
+      "appId": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Sherlock",
+      "sources": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+    },
+    {
+      "appId": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Data, SEO & Scraping",
+      "sources": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Open-source CLI that finds usernames across sites",
+      "sources": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+    },
+    {
+      "appId": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "No auth",
+      "sources": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+    },
+    {
+      "appId": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Open source",
+      "sources": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+    },
+    {
+      "appId": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "CLI/local",
+      "sources": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+    },
+    {
+      "appId": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "N/A",
+      "sources": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+    },
+    {
+      "appId": 58,
+      "app": "Sherlock",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Build with constraints",
+      "sources": [
+        "https://github.com/sherlock-project/sherlock"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 58
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+    },
+    {
+      "appId": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Paygent Connect",
+      "sources": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+    },
+    {
+      "appId": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Finance & Fintech",
+      "sources": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Marketplace payments, onboarding, and payouts",
+      "sources": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+    },
+    {
+      "appId": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Bearer API key",
+      "sources": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+    },
+    {
+      "appId": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Contact sales",
+      "sources": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+    },
+    {
+      "appId": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": false,
+      "finalSupported": false,
+      "finalValue": "REST + Webhooks",
+      "sources": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+    },
+    {
+      "appId": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "None found",
+      "sources": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+    },
+    {
+      "appId": 84,
+      "app": "Paygent Connect",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Outreach first",
+      "sources": [
+        "https://www.gopaygent.com/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 84
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+    },
+    {
+      "appId": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "iPayX",
+      "sources": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+    },
+    {
+      "appId": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Finance & Fintech",
+      "sources": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Institutional foreign-exchange audit and verification",
+      "sources": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+    },
+    {
+      "appId": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": false,
+      "finalValue": "Unknown",
+      "sources": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+    },
+    {
+      "appId": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Contact sales",
+      "sources": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+    },
+    {
+      "appId": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": false,
+      "finalSupported": false,
+      "finalValue": "No public API",
+      "sources": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+    },
+    {
+      "appId": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "None found",
+      "sources": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+    },
+    {
+      "appId": 85,
+      "app": "iPayX",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "No public API",
+      "sources": [
+        "https://www.ipayx.ai/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 85
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+    },
+    {
+      "appId": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "NotebookLM",
+      "sources": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "AI, Research & Media",
+      "sources": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Grounded research notebooks over uploaded sources",
+      "sources": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Google IAM/OAuth",
+      "sources": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+    },
+    {
+      "appId": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Plan/admin",
+      "sources": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+    },
+    {
+      "appId": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "REST preview",
+      "sources": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+    },
+    {
+      "appId": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "None found",
+      "sources": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+    },
+    {
+      "appId": 91,
+      "app": "NotebookLM",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Build with constraints",
+      "sources": [
+        "https://docs.cloud.google.com/gemini/enterprise/notebooklm-enterprise/docs/api-notebooks"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 91
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+    },
+    {
+      "appId": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Mermaid CLI",
+      "sources": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+    },
+    {
+      "appId": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "AI, Research & Media",
+      "sources": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "Local CLI that renders Mermaid diagrams to files",
+      "sources": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "No auth",
+      "sources": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+    },
+    {
+      "appId": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Open source",
+      "sources": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+    },
+    {
+      "appId": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "CLI/local",
+      "sources": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+    },
+    {
+      "appId": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "N/A",
+      "sources": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+    },
+    {
+      "appId": 98,
+      "app": "Mermaid CLI",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Build with constraints",
+      "sources": [
+        "https://github.com/mermaid-js/mermaid-cli"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 98
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+    },
+    {
+      "appId": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "field": "identity",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "YouTube Transcript",
+      "sources": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+    },
+    {
+      "appId": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "field": "category",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "AI, Research & Media",
+      "sources": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "field": "description",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "API for transcripts, video metadata, and search",
+      "sources": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "field": "auth",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Bearer API key; MCP OAuth",
+      "sources": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+    },
+    {
+      "appId": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "field": "access",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Self-serve",
+      "sources": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+    },
+    {
+      "appId": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "field": "api",
+      "firstSupported": true,
+      "finalSupported": true,
+      "finalValue": "REST",
+      "sources": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "Directly supported in the reviewed source set."
+    },
+    {
+      "appId": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "field": "mcp",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Official",
+      "sources": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+    },
+    {
+      "appId": 99,
+      "app": "YouTube Transcript",
+      "cohort": "adversarial",
+      "field": "verdict",
+      "firstSupported": false,
+      "finalSupported": true,
+      "finalValue": "Build now",
+      "sources": [
+        "https://transcriptapi.com/docs/api/"
+      ],
+      "firstPassArtifact": {
+        "path": "artifacts/research.raw.json",
+        "rowId": 99
+      },
+      "verificationMethods": [
+        "provider-owned evidence",
+        "browser check",
+        "AI-assisted claim review"
+      ],
+      "checkedAt": "2026-07-23",
+      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+    }
   ]
 }

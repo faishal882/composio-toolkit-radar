@@ -29,6 +29,8 @@ def main() -> int:
     rows = load("data/apps.json")
     seed = load("data/apps-seed.json")
     verification = load("data/verification.json")
+    identities = load("data/app-identities.json")
+    patterns = load("data/patterns.json")
     errors: list[str] = []
 
     expected_names = [name for group in seed for name in group["apps"]]
@@ -41,6 +43,14 @@ def main() -> int:
         errors.append("dataset names/order differ from apps-seed.json")
     if len(set(expected_categories)) != 10:
         errors.append("seed must contain 10 unique categories")
+    if [row.get("app") for row in identities] != expected_names:
+        errors.append("identity registry names/order differ from apps-seed.json")
+    if any(row.get("source") != "assignment_brief" for row in identities):
+        errors.append("every identity must be sourced from the assignment brief")
+    if any(not row.get("hosts") for row in identities):
+        errors.append("every identity must have at least one official host")
+    if "curation" in json.dumps(identities).lower():
+        errors.append("identity registry must not depend on curation output")
 
     for row in rows:
         label = f"{row.get('id', '?')}:{row.get('name', '?')}"
@@ -80,12 +90,25 @@ def main() -> int:
 
     method = verification.get("method", {})
     samples = verification.get("samples", [])
+    claims = verification.get("claimAudit", [])
     if method.get("sampleSize") != len(samples) or len(samples) != 20:
         errors.append("verification sampleSize must match 20 sample rows")
     if len({sample.get("id") for sample in samples}) != len(samples):
         errors.append("verification sample ids must be unique")
     if any(sample.get("id") not in range(1, 101) for sample in samples):
         errors.append("verification sample id outside dataset")
+    if len(claims) != 160:
+        errors.append(f"verification must contain 160 field-level claims, found {len(claims)}")
+    claim_keys = {(claim.get("appId"), claim.get("field")) for claim in claims}
+    if len(claim_keys) != len(claims):
+        errors.append("verification claim app/field keys must be unique")
+    expected_claim_keys = {
+        (sample["id"], field)
+        for sample in samples
+        for field in method.get("claimFields", [])
+    }
+    if claim_keys != expected_claim_keys:
+        errors.append("verification ledger does not cover every sample field exactly once")
     for phase in ("firstPass", "finalPass"):
         score = method.get(phase, {})
         supported, total, accuracy = score.get("supportedClaims"), score.get("totalClaims"), score.get("accuracy")
@@ -93,6 +116,39 @@ def main() -> int:
             errors.append(f"verification {phase} totals are invalid")
         elif round(100 * supported / total, 1) != accuracy:
             errors.append(f"verification {phase} accuracy does not match its totals")
+        claim_key = "firstSupported" if phase == "firstPass" else "finalSupported"
+        computed = sum(bool(claim.get(claim_key)) for claim in claims)
+        if supported != computed:
+            errors.append(f"verification {phase} declares {supported}, but claim ledger sums to {computed}")
+    for sample in samples:
+        sample_claims = [claim for claim in claims if claim.get("appId") == sample.get("id")]
+        if sample.get("first") != sum(bool(claim.get("firstSupported")) for claim in sample_claims):
+            errors.append(f"verification sample {sample.get('id')} first score differs from its claims")
+        if sample.get("final") != sum(bool(claim.get("finalSupported")) for claim in sample_claims):
+            errors.append(f"verification sample {sample.get('id')} final score differs from its claims")
+        if not sample.get("sourceUrls"):
+            errors.append(f"verification sample {sample.get('id')} has no source URL")
+    if any(not claim.get("sources") or not claim.get("verificationMethods") for claim in claims):
+        errors.append("every verification claim needs sources and verification methods")
+
+    if patterns.get("total") != len(rows):
+        errors.append("patterns total differs from dataset")
+    expected_access = Counter(row["access"] for row in rows)
+    expected_verdicts = Counter(row["verdict"] for row in rows)
+    if Counter(patterns.get("access", {})) != expected_access:
+        errors.append("patterns access counts differ from dataset")
+    if Counter(patterns.get("verdicts", {})) != expected_verdicts:
+        errors.append("patterns verdict counts differ from dataset")
+    review_ids = {row["id"] for row in rows if row["access"] == "Review required"}
+    outreach_ids = {row["id"] for row in rows if row["verdict"] == "Outreach first"}
+    expected_gate = {
+        "formalReview": len(review_ids),
+        "outreachFirst": len(outreach_ids),
+        "overlap": len(review_ids & outreach_ids),
+        "uniqueApps": len(review_ids | outreach_ids),
+    }
+    if patterns.get("humanGate") != expected_gate:
+        errors.append("patterns human-gate union/overlap is inconsistent")
 
     latest_path = ROOT / "artifacts/research.latest.json"
     if latest_path.exists():
@@ -112,6 +168,30 @@ def main() -> int:
                 if not primary.get("official") or not primary.get("technical"):
                     errors.append(f"agent row {row.get('id')}: auto-cleared without official technical evidence")
 
+        manifest_path = ROOT / "artifacts/curation-manifest.json"
+        if manifest_path.exists():
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            held_ids = {row.get("id") for row in agent_rows if row.get("status") == "needs_human_review"}
+            manifest_ids = {row.get("id") for row in manifest.get("reviewQueue", [])}
+            if manifest_ids != held_ids:
+                errors.append("curation manifest must contain every agent-held app exactly once")
+            if manifest.get("humanReviewCount") != len(held_ids):
+                errors.append("curation manifest review count is inconsistent")
+            if manifest.get("autoCleared") != len(agent_rows) - len(held_ids):
+                errors.append("curation manifest auto-cleared count is inconsistent")
+
+    browser_path = ROOT / "artifacts/browser-verification.json"
+    if browser_path.exists():
+        browser = json.loads(browser_path.read_text(encoding="utf-8"))
+        browser_rows = browser.get("results", [])
+        sample_ids = {sample.get("id") for sample in samples}
+        if {row.get("appId") for row in browser_rows} != sample_ids:
+            errors.append("browser verification must cover the same 20 sampled apps")
+        if browser.get("summary", {}).get("total") != len(browser_rows):
+            errors.append("browser verification total differs from its result count")
+        if browser.get("summary", {}).get("loaded") != sum(bool(row.get("loaded")) for row in browser_rows):
+            errors.append("browser verification loaded count is inconsistent")
+
     if errors:
         print("\n".join(errors))
         return 1
@@ -123,6 +203,10 @@ def main() -> int:
         "access": dict(sorted(Counter(row["access"] for row in rows).items())),
         "confidence": dict(sorted(Counter(row["confidence"] for row in rows).items())),
         "verificationSamples": len(samples),
+        "verificationClaims": len(claims),
+        "verificationFirst": method.get("firstPass", {}).get("accuracy"),
+        "verificationFinal": method.get("finalPass", {}).get("accuracy"),
+        "uniqueHumanGates": patterns.get("humanGate", {}).get("uniqueApps"),
     }
     print(json.dumps(summary, indent=2))
     return 0

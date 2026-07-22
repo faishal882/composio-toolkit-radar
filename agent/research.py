@@ -20,35 +20,9 @@ from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SEED_PATH = ROOT / "data/apps-seed.json"
-CURATION_PATH = ROOT / "data/curation.json"
+IDENTITIES_PATH = ROOT / "data/app-identities.json"
 DEFAULT_OUTPUT = ROOT / "artifacts/research.latest.json"
 SEARCH_TOOL = "COMPOSIO_SEARCH_WEB"
-
-# These products are unusually collision-prone. A matching host alone is not
-# sufficient for shared hosts such as GitHub and Google Cloud documentation.
-IDENTITY_OVERRIDES: dict[str, dict[str, list[str]]] = {
-    "Close": {"hosts": ["developer.close.com", "close.com"]},
-    "Plain": {"hosts": ["plain.com", "www.plain.com"]},
-    "Fanbasis": {"hosts": ["fanbasis.com", "dev-docs.fanbasis.com"]},
-    "Sherlock": {
-        "hosts": ["github.com", "sherlock-project.github.io"],
-        "url_contains": ["sherlock-project/sherlock", "sherlock-project.github.io"],
-    },
-    "Paygent Connect": {"hosts": ["gopaygent.com", "www.gopaygent.com"]},
-    "iPayX": {"hosts": ["ipayx.ai", "www.ipayx.ai"]},
-    "NotebookLM": {
-        "hosts": ["cloud.google.com", "docs.cloud.google.com"],
-        "url_contains": ["notebooklm", "api-notebooks"],
-    },
-    "Mermaid CLI": {
-        "hosts": ["github.com"],
-        "url_contains": ["mermaid-js/mermaid-cli"],
-    },
-    "YouTube Transcript": {"hosts": ["transcriptapi.com"]},
-    "Grain": {"hosts": ["grain.com", "developers.grain.com"]},
-}
-
 
 @dataclass(frozen=True)
 class AppIdentity:
@@ -293,32 +267,17 @@ def research_one(
 
 
 def load_identities() -> list[AppIdentity]:
-    groups = json.loads(SEED_PATH.read_text(encoding="utf-8"))
-    curated = []
-    if CURATION_PATH.exists():
-        curated = json.loads(CURATION_PATH.read_text(encoding="utf-8"))
-    curation_by_name = {row["name"]: row for row in curated}
-    identities: list[AppIdentity] = []
-    counter = 0
-    for group in groups:
-        for app in group["apps"]:
-            counter += 1
-            override = IDENTITY_OVERRIDES.get(app, {})
-            hosts = list(override.get("hosts", []))
-            if not hosts:
-                evidence = curation_by_name.get(app, {}).get("evidence", [])
-                hosts = [normalize_host(item.get("url", "")) for item in evidence]
-            hosts = list(dict.fromkeys(host for host in hosts if host))
-            identities.append(
-                AppIdentity(
-                    id=counter,
-                    app=app,
-                    category=group["category"],
-                    hosts=tuple(hosts),
-                    url_contains=tuple(override.get("url_contains", [])),
-                )
-            )
-    return identities
+    rows = json.loads(IDENTITIES_PATH.read_text(encoding="utf-8"))
+    return [
+        AppIdentity(
+            id=int(row["id"]),
+            app=row["app"],
+            category=row["category"],
+            hosts=tuple(row["hosts"]),
+            url_contains=tuple(row.get("urlContains", [])),
+        )
+        for row in rows
+    ]
 
 
 def build_artifact(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:

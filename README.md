@@ -8,14 +8,18 @@ An evidence-backed build-versus-outreach map for 100 app integrations. This repo
 
 - `index.html` — the single-page case study and interactive 100-app matrix.
 - `data/apps.json` — the reviewed, machine-readable final dataset.
-- `data/verification.json` — the 20-app, 160-claim accuracy audit.
+- `data/app-identities.json` — entity locks generated only from websites in the supplied brief.
+- `data/patterns.json` — generated auth, access, blocker, category, and buildability clusters.
+- `data/verification.json` — the recomputable 20-app, 160-claim verification ledger.
 - `agent/research.py` — the resumable Composio-powered discovery agent.
 - `artifacts/research.raw.json` — immutable first-pass answers and citations for all 100 apps.
 - `artifacts/research.latest.json` — output from the stronger Python agent, with evidence scores and a review queue.
+- `artifacts/curation-manifest.json` — the exact apps held for human review and their final decisions.
 - `data/curation.json` — the explicit human-review decisions that fix collisions and unsupported claims.
 - `scripts/curate.py` — materializes reviewed decisions while keeping the raw artifact immutable.
 - `scripts/validate.py` — schema, taxonomy, audit-math, URL, and cross-file consistency gates.
 - `scripts/check_evidence.py` — concurrent reachability checks for every primary evidence URL.
+- `scripts/browser_verify.py` — Chromium-backed verification of the 20 sampled source pages.
 - `tests/test_research_agent.py` — regression tests for identity collisions and CLI envelopes.
 
 ## Run the case study
@@ -48,9 +52,9 @@ Run a cheap smoke test without overwriting the included raw artifact:
 npm run research -- --limit 3 --output artifacts/live/smoke.json
 ```
 
-The Python agent calls the signed-in Composio CLI's `COMPOSIO_SEARCH_WEB` tool. It locks each app to expected provider domains, scores citations, retries transient failures with backoff, writes an atomic checkpoint after every completed app, and sends weak or mismatched results to `needs_human_review`. No Composio API key is copied into this repository.
+The Python agent calls the signed-in Composio CLI's `COMPOSIO_SEARCH_WEB` tool. It locks each app to provider domains extracted from the assignment brief, scores citations, retries transient failures with backoff, writes an atomic checkpoint after every completed app, and sends weak or mismatched results to `needs_human_review`. It never reads the final curation file to determine identity. No Composio API key is copied into this repository.
 
-The included upgraded run completed 100/100 requests with no request failures. It auto-cleared 54 apps with official technical evidence and held 46 for review. This is deliberately conservative: an official vendor blog can establish identity, but only provider technical documentation can auto-clear API and authentication claims.
+The included clean run completed 100/100 requests with no request failures. It auto-cleared 58 apps with official technical evidence and held 42 for review. This is deliberately conservative: an official vendor blog can establish identity, but only provider technical documentation can auto-clear API and authentication claims.
 
 Resume an interrupted run without repeating completed IDs:
 
@@ -74,7 +78,9 @@ immutable curation decisions + 100-row gates
 20-app claim-level audit
 ```
 
-The first pass scored **102/160 supported claims (63.8%)** on the QA sample. After the review loop, it scored **156/160 (97.5%)**. The final four unsupported claim-points remain visible as medium-confidence rather than being guessed.
+The first pass scored **101/160 supported claims (63.1%)** on the verification set. After the review loop, it scored **156/160 (97.5%)**. The final four unsupported claim-points remain visible as medium-confidence rather than being guessed.
+
+Because ten of the twenty apps were deliberately adversarial, this is a verification-set support rate, not a population-wide accuracy estimate. The cohorts are reported separately: category-stratified **79/80 → 80/80**, and adversarial **22/80 → 76/80**. Every total is generated from the 160 field-level records in `data/verification.json`.
 
 The most important failure classes were:
 
@@ -90,9 +96,18 @@ The most important failure classes were:
 npm run validate
 npm test
 npm run check:evidence
+npm run verify:browser
 ```
 
-`validate` fails on missing rows/fields, order or taxonomy drift, duplicate IDs or names, invalid evidence URLs, invalid enum values, audit-math inconsistencies, empty auth/evidence, or vague blockers. Unit tests protect the collision guards and Composio response parser. `check:evidence` performs a live GET against all 100 primary sources and writes `artifacts/evidence-check.json`.
+`validate` fails on missing rows/fields, identity leakage, order or taxonomy drift, duplicate IDs or names, invalid URLs or enum values, claim-ledger arithmetic inconsistencies, empty evidence, or overlapping gate counts reported as unique. Unit tests protect the collision guards, Composio response parser, and generated metrics. `check:evidence` checks all 100 links; `verify:browser` uses persistent Chromium for the 20-app audit set.
+
+Regenerate every deterministic artifact:
+
+```bash
+npm run build:data
+```
+
+See `MANUAL_COMPLETION.md` for the final submitter signoff. That step cannot honestly be delegated because the assignment explicitly asks where a human checked the agent.
 
 Some documentation providers return 403/429 to automated clients while loading in a browser. Those cases are retained in the evidence report instead of being silently counted as healthy.
 

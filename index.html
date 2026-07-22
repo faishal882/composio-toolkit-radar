@@ -37,7 +37,7 @@
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="#dataset">Explore all 100</a>
-            <a class="button button-quiet" href="artifacts/research.raw.json">Inspect raw agent output <span aria-hidden="true">↗</span></a>
+            <a class="button button-quiet" href="artifacts/research.latest.json">Inspect current agent output <span aria-hidden="true">↗</span></a>
             <a class="button button-quiet" href="https://github.com/faishal882/composio-toolkit-radar">Source + README <span aria-hidden="true">↗</span></a>
           </div>
         </div>
@@ -93,9 +93,14 @@
             <p>MCP is no longer edge infrastructure. It shortens the first build, but maturity ranges from GA endpoints to Enterprise EAPs—so “has MCP” is not the same as “self-serve.”</p>
           </article>
           <article>
-            <p class="finding-number small">20</p>
-            <h3>need a human before code</h3>
-            <p>Eleven require a formal review and nine are outreach-first. Product Ops should route these to partner conversations before engineering estimates them.</p>
+            <p class="finding-number small">16</p>
+            <h3>unique apps need a human gate</h3>
+            <p>Eleven require formal review and nine are outreach-first, with four apps in both groups. The union is 16, not 20.</p>
+          </article>
+          <article>
+            <p class="finding-number small">22</p>
+            <h3>hit the most common blocker</h3>
+            <p>Paid-plan or admin access is the largest blocker class. Solve entitlement and tenant-install UX before adding more API surface.</p>
           </article>
         </div>
 
@@ -106,6 +111,14 @@
           </div>
           <div id="category-bars" class="category-bars" aria-label="Build-now share by category"></div>
         </div>
+
+        <div class="category-map blocker-map">
+          <div class="category-map-copy">
+            <h3>Access gates beat protocol complexity</h3>
+            <p>Blockers are classified from the reviewed rows. The largest groups are paid-plan/admin access, formal review, and distribution approval—not missing REST endpoints.</p>
+          </div>
+          <div id="blocker-bars" class="category-bars" aria-label="Most common blocker classes"></div>
+        </div>
       </section>
 
       <section class="agent-section" id="agent" aria-labelledby="agent-title">
@@ -115,7 +128,7 @@
         </div>
 
         <div class="workflow" aria-label="Research workflow">
-          <div class="workflow-step"><span>1</span><strong>Seed</strong><p>100 exact entities, categories, and vendor hints from the brief.</p></div>
+          <div class="workflow-step"><span>1</span><strong>Seed</strong><p>A generated identity registry uses only websites supplied in the brief, never final answers.</p></div>
           <div class="workflow-arrow" aria-hidden="true">→</div>
           <div class="workflow-step"><span>2</span><strong>Discover</strong><p>Python runs parallel Composio Search calls with retries and atomic checkpoints.</p></div>
           <div class="workflow-arrow" aria-hidden="true">→</div>
@@ -128,19 +141,19 @@
           <div>
             <p class="proof-label">Runnable trigger</p>
             <code>npm run research -- --limit 100 --concurrency 4</code>
-            <p>The original run completed 100/100 searches. The upgraded Python agent adds retries, resumable checkpoints, domain guards, evidence scores, and a review queue.</p>
+            <p>The current run completed 100/100 searches. Python adds retries, resumable checkpoints, brief-derived domain guards, evidence scores, and an explicit review queue.</p>
           </div>
           <div class="agent-output" aria-label="Agent run output">
             <span>COMPOSIO_SEARCH_WEB</span>
             <span>4 concurrent workers</span>
-            <span>54 / 100 auto-cleared</span>
-            <span>46 / 100 held for review</span>
+            <span>58 / 100 auto-cleared</span>
+            <span>42 / 100 held for review</span>
           </div>
         </div>
 
         <div class="human-needed">
           <h3>Where the human earned their keep</h3>
-          <p>The first pass confidently researched the wrong entity for <strong>Sherlock</strong>, <strong>Paygent Connect</strong>, <strong>iPayX</strong>, and <strong>Mermaid CLI</strong>. It also mixed unrelated MCP citations into <strong>Close</strong> and <strong>Plain</strong>. Those failures produced two permanent controls: lock the vendor domain before classification, and never promote community MCP to “official.”</p>
+          <p>The first pass confidently researched the wrong entity for <strong>Sherlock</strong>, <strong>Paygent Connect</strong>, <strong>iPayX</strong>, and <strong>Mermaid CLI</strong>. It also mixed unrelated MCP citations into <strong>Close</strong> and <strong>Plain</strong>. Those failures produced two permanent controls: lock the vendor domain before classification, and never promote community MCP to “official.” <a href="artifacts/curation-manifest.json">Inspect all 42 routed decisions ↗</a></p>
         </div>
       </section>
 
@@ -150,13 +163,13 @@
           <p>Twenty apps × eight claims each. Ten were category-stratified; ten were deliberately adversarial. A claim scored only when provider-owned evidence supported it.</p>
         </div>
 
-        <div class="accuracy-shift" aria-label="Accuracy improved from 63.8 percent to 97.5 percent">
+        <div class="accuracy-shift" aria-label="Verification-set support improved from 63.1 percent to 97.5 percent">
           <div class="accuracy-before">
             <span>First pass</span>
-            <strong>63.8%</strong>
-            <small>102 / 160 supported claims</small>
+            <strong>63.1%</strong>
+            <small>101 / 160 supported claims</small>
           </div>
-          <div class="accuracy-arrow" aria-hidden="true">+33.7 pts →</div>
+          <div class="accuracy-arrow" aria-hidden="true">+34.4 pts →</div>
           <div class="accuracy-after">
             <span>After verification</span>
             <strong>97.5%</strong>
@@ -164,12 +177,19 @@
           </div>
         </div>
 
+        <div class="cohort-scores" aria-label="Verification scores by cohort">
+          <article><span>Category-stratified</span><strong>79/80 → 80/80</strong><p>A broad sanity sample: one app from each category.</p></article>
+          <article><span>Adversarial</span><strong>22/80 → 76/80</strong><p>Collision-prone and low-signal cases deliberately stress-tested.</p></article>
+        </div>
+
         <div class="corrections" id="corrections"></div>
 
         <div class="verification-footnote">
           <strong>Why not claim 100%?</strong>
           <p>Four claims remain medium-confidence across Fanbasis, Paygent Connect, and iPayX because public evidence is gated or absent. The final dataset says “unknown” or “contact sales” instead of inventing certainty.</p>
-          <a href="data/verification.json">Read the full scoring record <span aria-hidden="true">↗</span></a>
+          <a href="data/verification.json">Audit all 160 field judgments <span aria-hidden="true">↗</span></a>
+          <a href="artifacts/browser-verification.json">Inspect browser checks <span aria-hidden="true">↗</span></a>
+          <a href="artifacts/research.raw.json">Compare the original first pass <span aria-hidden="true">↗</span></a>
         </div>
       </section>
 
