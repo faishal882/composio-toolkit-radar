@@ -1,6 +1,6 @@
 {
   "summary": {
-    "checkedAt": "2026-07-22T20:49:56.033972Z",
+    "checkedAt": "2026-07-23T01:01:14.609443Z",
     "total": 100,
     "reachable": 99,
     "success2xx": 95,
@@ -767,9 +767,9 @@
     {
       "id": 85,
       "name": "iPayX",
-      "url": "https://www.ipayx.ai/",
+      "url": "https://www.ipayx.ai/developers",
       "status": 200,
-      "finalUrl": "https://www.ipayx.ai/",
+      "finalUrl": "https://www.ipayx.ai/developers",
       "reachable": true,
       "note": ""
     },

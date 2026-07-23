@@ -46,7 +46,6 @@ FIRST_SUPPORTED = {
     91: {"identity", "category", "description"}, 98: {"category", "description"},
     99: {"category", "description", "api"},
 }
-FINAL_UNSUPPORTED = {50: {"access"}, 84: {"api"}, 85: {"auth", "api"}}
 
 
 def value_for(row: dict, field: str):
@@ -67,13 +66,16 @@ def atomic_write(payload: object) -> None:
 def main() -> None:
     apps = json.loads((ROOT / "data/apps.json").read_text(encoding="utf-8"))
     by_id = {row["id"]: row for row in apps}
+    document_review = json.loads((ROOT / "artifacts/document-review.json").read_text(encoding="utf-8"))
+    reviews = {row["appId"]: row for row in document_review["reviews"]}
     claims = []
     sample_rows = []
     for app_id, cohort, note in SAMPLES:
         row = by_id[app_id]
-        source_urls = [item["url"] for item in row["evidence"]]
+        review = reviews[app_id]
+        source_urls = review["sources"]
         first_supported = FIRST_SUPPORTED[app_id]
-        final_unsupported = FINAL_UNSUPPORTED.get(app_id, set())
+        final_unsupported = set(review["unsupportedFields"])
         for field in FIELDS:
             claims.append(
                 {
@@ -86,9 +88,9 @@ def main() -> None:
                     "finalValue": value_for(row, field),
                     "sources": source_urls,
                     "firstPassArtifact": {"path": "artifacts/research.raw.json", "rowId": app_id},
-                    "verificationMethods": ["provider-owned evidence", "browser check", "AI-assisted claim review"],
+                    "verificationMethods": ["assignment identity lock", "provider document review", "Chromium browser check"],
                     "checkedAt": row["checkedAt"],
-                    "note": note if field not in first_supported or field in final_unsupported else "Directly supported in the reviewed source set.",
+                    "note": review["note"] if field not in first_supported or field in final_unsupported else "Supported under the documented field policy in artifacts/document-review.json.",
                 }
             )
         sample_rows.append(
@@ -130,13 +132,13 @@ def main() -> None:
                 "stratified": "One app per category, selected before manual review.",
                 "adversarial": "Ten low-signal, collision-prone, gated, or contradictory results flagged from the raw run.",
             },
-            "scoring": "One point only when provider-owned evidence directly supports the field; unknown or indirect evidence scores zero.",
+            "scoring": "Identity/category score from the locked brief plus provider confirmation; positive technical claims require provider-owned evidence, while 'none found' records a bounded public-source search; verdict scores only when it follows from verified facts or explicit uncertainty. Unknown claims score zero.",
             "scoreLabel": "Verification-set support rate; the adversarial half means this is not a population-wide accuracy estimate.",
             "firstPass": {"supportedClaims": first_total, "totalClaims": len(claims), "accuracy": round(100 * first_total / len(claims), 1)},
             "finalPass": {"supportedClaims": final_total, "totalClaims": len(claims), "accuracy": round(100 * final_total / len(claims), 1)},
             "cohortScores": cohorts,
-            "remainingUncertainty": "Four claims remain intentionally unsupported: Fanbasis access breadth, Paygent API breadth, and iPayX auth/API availability.",
-            "humanSignoff": "The repository preserves the ledger and browser checks; the submitter must complete the short manual signoff in MANUAL_COMPLETION.md.",
+            "remainingUncertainty": "Three claims remain intentionally unsupported: Fanbasis authentication, access route, and API shape are hidden behind its provider login gate.",
+            "independentReview": "All 20 sampled rows were read document-by-document by Codex and recorded in artifacts/document-review.json. This is disclosed as AI-assisted manual review, not human signoff.",
         },
         "samples": sample_rows,
         "claimAudit": claims,

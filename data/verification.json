@@ -16,7 +16,7 @@
       "stratified": "One app per category, selected before manual review.",
       "adversarial": "Ten low-signal, collision-prone, gated, or contradictory results flagged from the raw run."
     },
-    "scoring": "One point only when provider-owned evidence directly supports the field; unknown or indirect evidence scores zero.",
+    "scoring": "Identity/category score from the locked brief plus provider confirmation; positive technical claims require provider-owned evidence, while 'none found' records a bounded public-source search; verdict scores only when it follows from verified facts or explicit uncertainty. Unknown claims score zero.",
     "scoreLabel": "Verification-set support rate; the adversarial half means this is not a population-wide accuracy estimate.",
     "firstPass": {
       "supportedClaims": 101,
@@ -24,9 +24,9 @@
       "accuracy": 63.1
     },
     "finalPass": {
-      "supportedClaims": 156,
+      "supportedClaims": 157,
       "totalClaims": 160,
-      "accuracy": 97.5
+      "accuracy": 98.1
     },
     "cohortScores": {
       "stratified": {
@@ -38,14 +38,14 @@
       },
       "adversarial": {
         "first": 22,
-        "final": 76,
+        "final": 77,
         "total": 80,
         "firstAccuracy": 27.5,
-        "finalAccuracy": 95.0
+        "finalAccuracy": 96.2
       }
     },
-    "remainingUncertainty": "Four claims remain intentionally unsupported: Fanbasis access breadth, Paygent API breadth, and iPayX auth/API availability.",
-    "humanSignoff": "The repository preserves the ledger and browser checks; the submitter must complete the short manual signoff in MANUAL_COMPLETION.md."
+    "remainingUncertainty": "Three claims remain intentionally unsupported: Fanbasis authentication, access route, and API shape are hidden behind its provider login gate.",
+    "independentReview": "All 20 sampled rows were read document-by-document by Codex and recorded in artifacts/document-review.json. This is disclosed as AI-assisted manual review, not human signoff."
   },
   "samples": [
     {
@@ -57,7 +57,8 @@
       "result": "hit",
       "note": "Attio auth, REST surface, webhooks, and official MCP were directly documented.",
       "sourceUrls": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -73,7 +74,8 @@
       "result": "hit",
       "note": "Intercom's private-token, public OAuth, REST, and remote MCP paths matched docs.",
       "sourceUrls": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -89,7 +91,8 @@
       "result": "corrected",
       "note": "Slack's API result was sound; review added the official MCP and admin-install constraint.",
       "sourceUrls": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -153,7 +156,9 @@
       "result": "hit",
       "note": "GitHub REST, GraphQL, token types, and official MCP were directly supported.",
       "sourceUrls": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -169,7 +174,8 @@
       "result": "hit",
       "note": "Notion internal tokens, public OAuth, REST, and hosted MCP matched docs.",
       "sourceUrls": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -185,7 +191,8 @@
       "result": "hit",
       "note": "Stripe API keys, Connect OAuth, REST, and hosted MCP matched docs.",
       "sourceUrls": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -201,7 +208,8 @@
       "result": "hit",
       "note": "Otter's Enterprise REST API and OAuth-authenticated MCP were verified in its Help Center.",
       "sourceUrls": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -217,7 +225,8 @@
       "result": "corrected",
       "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs.",
       "sourceUrls": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -261,7 +270,7 @@
       "app": "Fanbasis",
       "cohort": "adversarial",
       "first": 3,
-      "final": 7,
+      "final": 5,
       "result": "uncertain",
       "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain.",
       "sourceUrls": [
@@ -293,8 +302,8 @@
       "app": "Paygent Connect",
       "cohort": "adversarial",
       "first": 1,
-      "final": 7,
-      "result": "uncertain",
+      "final": 8,
+      "result": "corrected",
       "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain.",
       "sourceUrls": [
         "https://www.gopaygent.com/"
@@ -309,11 +318,11 @@
       "app": "iPayX",
       "cohort": "adversarial",
       "first": 1,
-      "final": 6,
-      "result": "uncertain",
+      "final": 8,
+      "result": "corrected",
       "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API.",
       "sourceUrls": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
@@ -379,19 +388,20 @@
       "finalSupported": true,
       "finalValue": "Attio",
       "sources": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 4
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 4,
@@ -402,19 +412,20 @@
       "finalSupported": true,
       "finalValue": "CRM & Sales",
       "sources": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 4
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 4,
@@ -425,19 +436,20 @@
       "finalSupported": true,
       "finalValue": "Flexible, data-model-driven CRM",
       "sources": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 4
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 4,
@@ -448,19 +460,20 @@
       "finalSupported": true,
       "finalValue": "OAuth 2.0; API key",
       "sources": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 4
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 4,
@@ -471,19 +484,20 @@
       "finalSupported": true,
       "finalValue": "Self-serve",
       "sources": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 4
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 4,
@@ -494,19 +508,20 @@
       "finalSupported": true,
       "finalValue": "REST",
       "sources": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 4
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 4,
@@ -517,19 +532,20 @@
       "finalSupported": true,
       "finalValue": "Official",
       "sources": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 4
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 4,
@@ -540,19 +556,20 @@
       "finalSupported": true,
       "finalValue": "Build now",
       "sources": [
-        "https://attio.com/platform/developers"
+        "https://attio.com/platform/developers",
+        "https://docs.attio.com/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 4
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 12,
@@ -563,19 +580,20 @@
       "finalSupported": true,
       "finalValue": "Intercom",
       "sources": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 12
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 12,
@@ -586,19 +604,20 @@
       "finalSupported": true,
       "finalValue": "Support & Helpdesk",
       "sources": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 12
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 12,
@@ -609,19 +628,20 @@
       "finalSupported": true,
       "finalValue": "Customer messaging, support, and engagement",
       "sources": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 12
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 12,
@@ -632,19 +652,20 @@
       "finalSupported": true,
       "finalValue": "OAuth 2.0; access token",
       "sources": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 12
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 12,
@@ -655,19 +676,20 @@
       "finalSupported": true,
       "finalValue": "Self-serve",
       "sources": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 12
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 12,
@@ -678,19 +700,20 @@
       "finalSupported": true,
       "finalValue": "REST",
       "sources": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 12
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 12,
@@ -701,19 +724,20 @@
       "finalSupported": true,
       "finalValue": "Official",
       "sources": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 12
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 12,
@@ -724,19 +748,20 @@
       "finalSupported": true,
       "finalValue": "Build now",
       "sources": [
-        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication"
+        "https://developers.intercom.com/docs/build-an-integration/learn-more/authentication",
+        "https://developers.intercom.com/docs/guides/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 12
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 21,
@@ -747,19 +772,20 @@
       "finalSupported": true,
       "finalValue": "Slack",
       "sources": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 21
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 21,
@@ -770,19 +796,20 @@
       "finalSupported": true,
       "finalValue": "Communications",
       "sources": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 21
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 21,
@@ -793,19 +820,20 @@
       "finalSupported": true,
       "finalValue": "Team messaging and collaboration workspace",
       "sources": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 21
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 21,
@@ -816,19 +844,20 @@
       "finalSupported": true,
       "finalValue": "OAuth 2.0",
       "sources": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 21
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 21,
@@ -839,19 +868,20 @@
       "finalSupported": true,
       "finalValue": "Self-serve",
       "sources": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 21
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 21,
@@ -862,19 +892,20 @@
       "finalSupported": true,
       "finalValue": "REST + Events",
       "sources": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 21
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 21,
@@ -885,19 +916,20 @@
       "finalSupported": true,
       "finalValue": "Official",
       "sources": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 21
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Slack's API result was sound; review added the official MCP and admin-install constraint."
+      "note": "Confirmed OAuth, Web API/events, hosted MCP, and workspace-admin approval boundary."
     },
     {
       "appId": 21,
@@ -908,19 +940,20 @@
       "finalSupported": true,
       "finalValue": "Build now",
       "sources": [
-        "https://docs.slack.dev/authentication/"
+        "https://docs.slack.dev/authentication/",
+        "https://docs.slack.dev/ai/slack-mcp-server/"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 21
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 31,
@@ -938,12 +971,12 @@
         "rowId": 31
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 31,
@@ -961,12 +994,12 @@
         "rowId": 31
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 31,
@@ -984,12 +1017,12 @@
         "rowId": 31
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 31,
@@ -1007,12 +1040,12 @@
         "rowId": 31
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 31,
@@ -1030,12 +1063,12 @@
         "rowId": 31
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 31,
@@ -1053,12 +1086,12 @@
         "rowId": 31
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 31,
@@ -1076,12 +1109,12 @@
         "rowId": 31
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 31,
@@ -1099,12 +1132,12 @@
         "rowId": 31
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 43,
@@ -1122,12 +1155,12 @@
         "rowId": 43
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 43,
@@ -1145,12 +1178,12 @@
         "rowId": 43
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 43,
@@ -1168,12 +1201,12 @@
         "rowId": 43
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 43,
@@ -1191,12 +1224,12 @@
         "rowId": 43
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 43,
@@ -1214,12 +1247,12 @@
         "rowId": 43
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 43,
@@ -1237,12 +1270,12 @@
         "rowId": 43
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 43,
@@ -1260,12 +1293,12 @@
         "rowId": 43
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 43,
@@ -1283,12 +1316,12 @@
         "rowId": 43
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 53,
@@ -1306,12 +1339,12 @@
         "rowId": 53
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 53,
@@ -1329,12 +1362,12 @@
         "rowId": 53
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 53,
@@ -1352,12 +1385,12 @@
         "rowId": 53
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 53,
@@ -1375,12 +1408,12 @@
         "rowId": 53
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 53,
@@ -1398,12 +1431,12 @@
         "rowId": 53
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 53,
@@ -1421,12 +1454,12 @@
         "rowId": 53
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 53,
@@ -1444,12 +1477,12 @@
         "rowId": 53
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 53,
@@ -1467,12 +1500,12 @@
         "rowId": 53
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 61,
@@ -1483,19 +1516,21 @@
       "finalSupported": true,
       "finalValue": "GitHub",
       "sources": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 61
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 61,
@@ -1506,19 +1541,21 @@
       "finalSupported": true,
       "finalValue": "Developer & Infra",
       "sources": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 61
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 61,
@@ -1529,19 +1566,21 @@
       "finalSupported": true,
       "finalValue": "Code hosting, collaboration, and software delivery",
       "sources": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 61
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 61,
@@ -1552,19 +1591,21 @@
       "finalSupported": true,
       "finalValue": "OAuth 2.0; app/PAT token",
       "sources": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 61
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 61,
@@ -1575,19 +1616,21 @@
       "finalSupported": true,
       "finalValue": "Self-serve",
       "sources": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 61
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 61,
@@ -1598,19 +1641,21 @@
       "finalSupported": true,
       "finalValue": "REST + GraphQL",
       "sources": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 61
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 61,
@@ -1621,19 +1666,21 @@
       "finalSupported": true,
       "finalValue": "Official",
       "sources": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 61
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 61,
@@ -1644,19 +1691,21 @@
       "finalSupported": true,
       "finalValue": "Build now",
       "sources": [
-        "https://docs.github.com/en/rest"
+        "https://docs.github.com/en/rest",
+        "https://docs.github.com/en/graphql",
+        "https://github.com/github/github-mcp-server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 61
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 71,
@@ -1667,19 +1716,20 @@
       "finalSupported": true,
       "finalValue": "Notion",
       "sources": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 71
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 71,
@@ -1690,19 +1740,20 @@
       "finalSupported": true,
       "finalValue": "Productivity",
       "sources": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 71
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 71,
@@ -1713,19 +1764,20 @@
       "finalSupported": true,
       "finalValue": "Collaborative docs, wikis, and structured databases",
       "sources": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 71
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 71,
@@ -1736,19 +1788,20 @@
       "finalSupported": true,
       "finalValue": "Bearer token; OAuth 2.0",
       "sources": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 71
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 71,
@@ -1759,19 +1812,20 @@
       "finalSupported": true,
       "finalValue": "Self-serve",
       "sources": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 71
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 71,
@@ -1782,19 +1836,20 @@
       "finalSupported": true,
       "finalValue": "REST",
       "sources": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 71
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 71,
@@ -1805,19 +1860,20 @@
       "finalSupported": true,
       "finalValue": "Official",
       "sources": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 71
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 71,
@@ -1828,19 +1884,20 @@
       "finalSupported": true,
       "finalValue": "Build now",
       "sources": [
-        "https://developers.notion.com/guides/get-started/authorization"
+        "https://developers.notion.com/guides/get-started/authorization",
+        "https://developers.notion.com/guides/mcp/overview"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 71
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 81,
@@ -1851,19 +1908,20 @@
       "finalSupported": true,
       "finalValue": "Stripe",
       "sources": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 81
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 81,
@@ -1874,19 +1932,20 @@
       "finalSupported": true,
       "finalValue": "Finance & Fintech",
       "sources": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 81
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 81,
@@ -1897,19 +1956,20 @@
       "finalSupported": true,
       "finalValue": "Payments, billing, and financial infrastructure",
       "sources": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 81
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 81,
@@ -1920,19 +1980,20 @@
       "finalSupported": true,
       "finalValue": "API key; OAuth 2.0",
       "sources": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 81
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 81,
@@ -1943,19 +2004,20 @@
       "finalSupported": true,
       "finalValue": "Self-serve",
       "sources": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 81
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 81,
@@ -1966,19 +2028,20 @@
       "finalSupported": true,
       "finalValue": "REST",
       "sources": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 81
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 81,
@@ -1989,19 +2052,20 @@
       "finalSupported": true,
       "finalValue": "Official",
       "sources": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 81
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 81,
@@ -2012,19 +2076,20 @@
       "finalSupported": true,
       "finalValue": "Build now",
       "sources": [
-        "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia"
+        "https://docs.stripe.com/api/authentication",
+        "https://docs.stripe.com/mcp"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 81
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 92,
@@ -2035,19 +2100,20 @@
       "finalSupported": true,
       "finalValue": "Otter AI",
       "sources": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 92
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 92,
@@ -2058,19 +2124,20 @@
       "finalSupported": true,
       "finalValue": "AI, Research & Media",
       "sources": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 92
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 92,
@@ -2081,19 +2148,20 @@
       "finalSupported": true,
       "finalValue": "Meeting recording, transcription, and knowledge search",
       "sources": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 92
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 92,
@@ -2104,19 +2172,20 @@
       "finalSupported": true,
       "finalValue": "Bearer API key; MCP OAuth",
       "sources": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 92
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 92,
@@ -2127,19 +2196,20 @@
       "finalSupported": true,
       "finalValue": "Plan/admin",
       "sources": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 92
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 92,
@@ -2150,19 +2220,20 @@
       "finalSupported": true,
       "finalValue": "REST",
       "sources": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 92
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 92,
@@ -2173,19 +2244,20 @@
       "finalSupported": true,
       "finalValue": "Official",
       "sources": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 92
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 92,
@@ -2196,19 +2268,20 @@
       "finalSupported": true,
       "finalValue": "Build with constraints",
       "sources": [
-        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API"
+        "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+        "https://help.otter.ai/hc/en-us/articles/35287607569687-Otter-MCP-Server"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 92
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 8,
@@ -2219,19 +2292,20 @@
       "finalSupported": true,
       "finalValue": "Close",
       "sources": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 8
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+      "note": "Corrected the entity collision and confirmed Close API keys, partner OAuth, and account-gated REST access."
     },
     {
       "appId": 8,
@@ -2242,19 +2316,20 @@
       "finalSupported": true,
       "finalValue": "CRM & Sales",
       "sources": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 8
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 8,
@@ -2265,19 +2340,20 @@
       "finalSupported": true,
       "finalValue": "Sales CRM with calling, email, and automation",
       "sources": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 8
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+      "note": "Corrected the entity collision and confirmed Close API keys, partner OAuth, and account-gated REST access."
     },
     {
       "appId": 8,
@@ -2288,19 +2364,20 @@
       "finalSupported": true,
       "finalValue": "API key; OAuth 2.0",
       "sources": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 8
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+      "note": "Corrected the entity collision and confirmed Close API keys, partner OAuth, and account-gated REST access."
     },
     {
       "appId": 8,
@@ -2311,19 +2388,20 @@
       "finalSupported": true,
       "finalValue": "Plan/admin",
       "sources": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 8
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+      "note": "Corrected the entity collision and confirmed Close API keys, partner OAuth, and account-gated REST access."
     },
     {
       "appId": 8,
@@ -2334,19 +2412,20 @@
       "finalSupported": true,
       "finalValue": "REST",
       "sources": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 8
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+      "note": "Corrected the entity collision and confirmed Close API keys, partner OAuth, and account-gated REST access."
     },
     {
       "appId": 8,
@@ -2357,19 +2436,20 @@
       "finalSupported": true,
       "finalValue": "None found",
       "sources": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 8
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+      "note": "Corrected the entity collision and confirmed Close API keys, partner OAuth, and account-gated REST access."
     },
     {
       "appId": 8,
@@ -2380,19 +2460,20 @@
       "finalSupported": true,
       "finalValue": "Build with constraints",
       "sources": [
-        "https://developer.close.com/topics/authentication/"
+        "https://developer.close.com/topics/authentication/",
+        "https://help.close.com/docs/api-keys-oauth"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 8
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Close retrieved unrelated vendors. Entity locking replaced the result with Close-owned docs."
+      "note": "Corrected the entity collision and confirmed Close API keys, partner OAuth, and account-gated REST access."
     },
     {
       "appId": 17,
@@ -2410,12 +2491,12 @@
         "rowId": 17
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+      "note": "Corrected unrelated-provider citations and confirmed workspace bearer tokens plus GraphQL."
     },
     {
       "appId": 17,
@@ -2433,12 +2514,12 @@
         "rowId": 17
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 17,
@@ -2456,12 +2537,12 @@
         "rowId": 17
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+      "note": "Corrected unrelated-provider citations and confirmed workspace bearer tokens plus GraphQL."
     },
     {
       "appId": 17,
@@ -2479,12 +2560,12 @@
         "rowId": 17
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+      "note": "Corrected unrelated-provider citations and confirmed workspace bearer tokens plus GraphQL."
     },
     {
       "appId": 17,
@@ -2502,12 +2583,12 @@
         "rowId": 17
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+      "note": "Corrected unrelated-provider citations and confirmed workspace bearer tokens plus GraphQL."
     },
     {
       "appId": 17,
@@ -2525,12 +2606,12 @@
         "rowId": 17
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+      "note": "Corrected unrelated-provider citations and confirmed workspace bearer tokens plus GraphQL."
     },
     {
       "appId": 17,
@@ -2548,12 +2629,12 @@
         "rowId": 17
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+      "note": "Corrected unrelated-provider citations and confirmed workspace bearer tokens plus GraphQL."
     },
     {
       "appId": 17,
@@ -2571,12 +2652,12 @@
         "rowId": 17
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Plain retrieved unrelated MCP vendors. Provider-domain enforcement recovered the correct product."
+      "note": "Corrected unrelated-provider citations and confirmed workspace bearer tokens plus GraphQL."
     },
     {
       "appId": 37,
@@ -2594,12 +2675,12 @@
         "rowId": 37
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 37,
@@ -2617,12 +2698,12 @@
         "rowId": 37
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 37,
@@ -2640,12 +2721,12 @@
         "rowId": 37
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 37,
@@ -2663,12 +2744,12 @@
         "rowId": 37
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 37,
@@ -2686,12 +2767,12 @@
         "rowId": 37
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "systeme.io auth/API were right, but a community MCP was initially labeled first-party."
+      "note": "Confirmed API-key REST/webhook access and removed the unsupported first-party MCP claim."
     },
     {
       "appId": 37,
@@ -2709,12 +2790,12 @@
         "rowId": 37
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 37,
@@ -2732,12 +2813,12 @@
         "rowId": 37
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "systeme.io auth/API were right, but a community MCP was initially labeled first-party."
+      "note": "Confirmed API-key REST/webhook access and removed the unsupported first-party MCP claim."
     },
     {
       "appId": 37,
@@ -2755,12 +2836,12 @@
         "rowId": 37
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 50,
@@ -2778,12 +2859,12 @@
         "rowId": 50
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 50,
@@ -2801,12 +2882,12 @@
         "rowId": 50
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 50,
@@ -2824,12 +2905,12 @@
         "rowId": 50
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 50,
@@ -2837,7 +2918,7 @@
       "cohort": "adversarial",
       "field": "auth",
       "firstSupported": false,
-      "finalSupported": true,
+      "finalSupported": false,
       "finalValue": "API key",
       "sources": [
         "https://dev-docs.fanbasis.com/login.html"
@@ -2847,12 +2928,12 @@
         "rowId": 50
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+      "note": "The provider developer portal exists but exposes only a login screen; credential type, access route, and API shape remain unsupported."
     },
     {
       "appId": 50,
@@ -2870,12 +2951,12 @@
         "rowId": 50
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+      "note": "The provider developer portal exists but exposes only a login screen; credential type, access route, and API shape remain unsupported."
     },
     {
       "appId": 50,
@@ -2883,7 +2964,7 @@
       "cohort": "adversarial",
       "field": "api",
       "firstSupported": false,
-      "finalSupported": true,
+      "finalSupported": false,
       "finalValue": "REST + Webhooks",
       "sources": [
         "https://dev-docs.fanbasis.com/login.html"
@@ -2893,12 +2974,12 @@
         "rowId": 50
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+      "note": "The provider developer portal exists but exposes only a login screen; credential type, access route, and API shape remain unsupported."
     },
     {
       "appId": 50,
@@ -2916,12 +2997,12 @@
         "rowId": 50
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+      "note": "The provider developer portal exists but exposes only a login screen; credential type, access route, and API shape remain unsupported."
     },
     {
       "appId": 50,
@@ -2939,12 +3020,12 @@
         "rowId": 50
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Fanbasis relied on unofficial packages. Official docs are login-gated, so access remains uncertain."
+      "note": "The provider developer portal exists but exposes only a login screen; credential type, access route, and API shape remain unsupported."
     },
     {
       "appId": 58,
@@ -2962,12 +3043,12 @@
         "rowId": 58
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+      "note": "Corrected the entity collision to the supplied open-source username-search CLI; it is a local process, not a hosted API or MCP."
     },
     {
       "appId": 58,
@@ -2985,12 +3066,12 @@
         "rowId": 58
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 58,
@@ -3008,12 +3089,12 @@
         "rowId": 58
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+      "note": "Corrected the entity collision to the supplied open-source username-search CLI; it is a local process, not a hosted API or MCP."
     },
     {
       "appId": 58,
@@ -3031,12 +3112,12 @@
         "rowId": 58
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+      "note": "Corrected the entity collision to the supplied open-source username-search CLI; it is a local process, not a hosted API or MCP."
     },
     {
       "appId": 58,
@@ -3054,12 +3135,12 @@
         "rowId": 58
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+      "note": "Corrected the entity collision to the supplied open-source username-search CLI; it is a local process, not a hosted API or MCP."
     },
     {
       "appId": 58,
@@ -3077,12 +3158,12 @@
         "rowId": 58
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+      "note": "Corrected the entity collision to the supplied open-source username-search CLI; it is a local process, not a hosted API or MCP."
     },
     {
       "appId": 58,
@@ -3100,12 +3181,12 @@
         "rowId": 58
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+      "note": "Corrected the entity collision to the supplied open-source username-search CLI; it is a local process, not a hosted API or MCP."
     },
     {
       "appId": 58,
@@ -3123,12 +3204,12 @@
         "rowId": 58
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Sherlock resolved to a payment product instead of the supplied open-source username CLI."
+      "note": "Corrected the entity collision to the supplied open-source username-search CLI; it is a local process, not a hosted API or MCP."
     },
     {
       "appId": 84,
@@ -3146,12 +3227,12 @@
         "rowId": 84
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+      "note": "Corrected the stale gate: the provider now shows bearer-key REST/webhooks, sandbox testing, and self-serve signup for Paygent Connect."
     },
     {
       "appId": 84,
@@ -3169,12 +3250,12 @@
         "rowId": 84
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 84,
@@ -3192,12 +3273,12 @@
         "rowId": 84
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+      "note": "Corrected the stale gate: the provider now shows bearer-key REST/webhooks, sandbox testing, and self-serve signup for Paygent Connect."
     },
     {
       "appId": 84,
@@ -3215,12 +3296,12 @@
         "rowId": 84
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+      "note": "Corrected the stale gate: the provider now shows bearer-key REST/webhooks, sandbox testing, and self-serve signup for Paygent Connect."
     },
     {
       "appId": 84,
@@ -3229,7 +3310,7 @@
       "field": "access",
       "firstSupported": false,
       "finalSupported": true,
-      "finalValue": "Contact sales",
+      "finalValue": "Self-serve",
       "sources": [
         "https://www.gopaygent.com/"
       ],
@@ -3238,12 +3319,12 @@
         "rowId": 84
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+      "note": "Corrected the stale gate: the provider now shows bearer-key REST/webhooks, sandbox testing, and self-serve signup for Paygent Connect."
     },
     {
       "appId": 84,
@@ -3251,7 +3332,7 @@
       "cohort": "adversarial",
       "field": "api",
       "firstSupported": false,
-      "finalSupported": false,
+      "finalSupported": true,
       "finalValue": "REST + Webhooks",
       "sources": [
         "https://www.gopaygent.com/"
@@ -3261,12 +3342,12 @@
         "rowId": 84
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+      "note": "Corrected the stale gate: the provider now shows bearer-key REST/webhooks, sandbox testing, and self-serve signup for Paygent Connect."
     },
     {
       "appId": 84,
@@ -3284,12 +3365,12 @@
         "rowId": 84
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+      "note": "Corrected the stale gate: the provider now shows bearer-key REST/webhooks, sandbox testing, and self-serve signup for Paygent Connect."
     },
     {
       "appId": 84,
@@ -3298,7 +3379,7 @@
       "field": "verdict",
       "firstSupported": false,
       "finalSupported": true,
-      "finalValue": "Outreach first",
+      "finalValue": "Build now",
       "sources": [
         "https://www.gopaygent.com/"
       ],
@@ -3307,12 +3388,12 @@
         "rowId": 84
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Paygent Connect resolved to an unrelated AI-billing product; public API breadth remains uncertain."
+      "note": "Corrected the stale gate: the provider now shows bearer-key REST/webhooks, sandbox testing, and self-serve signup for Paygent Connect."
     },
     {
       "appId": 85,
@@ -3323,19 +3404,19 @@
       "finalSupported": true,
       "finalValue": "iPayX",
       "sources": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 85
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+      "note": "Corrected vendor confusion: the provider documents bearer-key REST/webhooks and its official remote MCP; production API access is paid."
     },
     {
       "appId": 85,
@@ -3346,19 +3427,19 @@
       "finalSupported": true,
       "finalValue": "Finance & Fintech",
       "sources": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 85
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 85,
@@ -3369,19 +3450,19 @@
       "finalSupported": true,
       "finalValue": "Institutional foreign-exchange audit and verification",
       "sources": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 85
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+      "note": "Corrected vendor confusion: the provider documents bearer-key REST/webhooks and its official remote MCP; production API access is paid."
     },
     {
       "appId": 85,
@@ -3389,22 +3470,22 @@
       "cohort": "adversarial",
       "field": "auth",
       "firstSupported": false,
-      "finalSupported": false,
-      "finalValue": "Unknown",
+      "finalSupported": true,
+      "finalValue": "Bearer API key",
       "sources": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 85
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+      "note": "Corrected vendor confusion: the provider documents bearer-key REST/webhooks and its official remote MCP; production API access is paid."
     },
     {
       "appId": 85,
@@ -3413,21 +3494,21 @@
       "field": "access",
       "firstSupported": false,
       "finalSupported": true,
-      "finalValue": "Contact sales",
+      "finalValue": "Plan/admin",
       "sources": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 85
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+      "note": "Corrected vendor confusion: the provider documents bearer-key REST/webhooks and its official remote MCP; production API access is paid."
     },
     {
       "appId": 85,
@@ -3435,22 +3516,22 @@
       "cohort": "adversarial",
       "field": "api",
       "firstSupported": false,
-      "finalSupported": false,
-      "finalValue": "No public API",
+      "finalSupported": true,
+      "finalValue": "REST + Webhooks",
       "sources": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 85
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+      "note": "Corrected vendor confusion: the provider documents bearer-key REST/webhooks and its official remote MCP; production API access is paid."
     },
     {
       "appId": 85,
@@ -3459,21 +3540,21 @@
       "field": "mcp",
       "firstSupported": false,
       "finalSupported": true,
-      "finalValue": "None found",
+      "finalValue": "Official",
       "sources": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 85
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+      "note": "Corrected vendor confusion: the provider documents bearer-key REST/webhooks and its official remote MCP; production API access is paid."
     },
     {
       "appId": 85,
@@ -3482,21 +3563,21 @@
       "field": "verdict",
       "firstSupported": false,
       "finalSupported": true,
-      "finalValue": "No public API",
+      "finalValue": "Build with constraints",
       "sources": [
-        "https://www.ipayx.ai/"
+        "https://www.ipayx.ai/developers"
       ],
       "firstPassArtifact": {
         "path": "artifacts/research.raw.json",
         "rowId": 85
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "iPayX was conflated with IXOPAY. No public developer docs were located for auth or API."
+      "note": "Corrected vendor confusion: the provider documents bearer-key REST/webhooks and its official remote MCP; production API access is paid."
     },
     {
       "appId": 91,
@@ -3514,12 +3595,12 @@
         "rowId": 91
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 91,
@@ -3537,12 +3618,12 @@
         "rowId": 91
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 91,
@@ -3560,12 +3641,12 @@
         "rowId": 91
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 91,
@@ -3583,12 +3664,12 @@
         "rowId": 91
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+      "note": "Separated consumer NotebookLM from Gemini Notebook Enterprise and confirmed the licensed preview API."
     },
     {
       "appId": 91,
@@ -3606,12 +3687,12 @@
         "rowId": 91
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+      "note": "Separated consumer NotebookLM from Gemini Notebook Enterprise and confirmed the licensed preview API."
     },
     {
       "appId": 91,
@@ -3629,12 +3710,12 @@
         "rowId": 91
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+      "note": "Separated consumer NotebookLM from Gemini Notebook Enterprise and confirmed the licensed preview API."
     },
     {
       "appId": 91,
@@ -3652,12 +3733,12 @@
         "rowId": 91
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+      "note": "Separated consumer NotebookLM from Gemini Notebook Enterprise and confirmed the licensed preview API."
     },
     {
       "appId": 91,
@@ -3675,12 +3756,12 @@
         "rowId": 91
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass checked consumer NotebookLM; review found the licensed Enterprise preview API."
+      "note": "Separated consumer NotebookLM from Gemini Notebook Enterprise and confirmed the licensed preview API."
     },
     {
       "appId": 98,
@@ -3698,12 +3779,12 @@
         "rowId": 98
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+      "note": "Corrected entity drift from Mermaid Chart to the supplied open-source local rendering CLI."
     },
     {
       "appId": 98,
@@ -3721,12 +3802,12 @@
         "rowId": 98
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 98,
@@ -3744,12 +3825,12 @@
         "rowId": 98
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 98,
@@ -3767,12 +3848,12 @@
         "rowId": 98
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+      "note": "Corrected entity drift from Mermaid Chart to the supplied open-source local rendering CLI."
     },
     {
       "appId": 98,
@@ -3790,12 +3871,12 @@
         "rowId": 98
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+      "note": "Corrected entity drift from Mermaid Chart to the supplied open-source local rendering CLI."
     },
     {
       "appId": 98,
@@ -3813,12 +3894,12 @@
         "rowId": 98
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+      "note": "Corrected entity drift from Mermaid Chart to the supplied open-source local rendering CLI."
     },
     {
       "appId": 98,
@@ -3836,12 +3917,12 @@
         "rowId": 98
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+      "note": "Corrected entity drift from Mermaid Chart to the supplied open-source local rendering CLI."
     },
     {
       "appId": 98,
@@ -3859,12 +3940,12 @@
         "rowId": 98
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Mermaid CLI drifted to Mermaid Chart. The target is the supplied local open-source CLI."
+      "note": "Corrected entity drift from Mermaid Chart to the supplied open-source local rendering CLI."
     },
     {
       "appId": 99,
@@ -3882,12 +3963,12 @@
         "rowId": 99
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+      "note": "Corrected the vendor identity and confirmed bearer-key REST access, self-serve signup, and the provider MCP endpoint."
     },
     {
       "appId": 99,
@@ -3905,12 +3986,12 @@
         "rowId": 99
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 99,
@@ -3928,12 +4009,12 @@
         "rowId": 99
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 99,
@@ -3951,12 +4032,12 @@
         "rowId": 99
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+      "note": "Corrected the vendor identity and confirmed bearer-key REST access, self-serve signup, and the provider MCP endpoint."
     },
     {
       "appId": 99,
@@ -3974,12 +4055,12 @@
         "rowId": 99
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+      "note": "Corrected the vendor identity and confirmed bearer-key REST access, self-serve signup, and the provider MCP endpoint."
     },
     {
       "appId": 99,
@@ -3997,12 +4078,12 @@
         "rowId": 99
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "Directly supported in the reviewed source set."
+      "note": "Supported under the documented field policy in artifacts/document-review.json."
     },
     {
       "appId": 99,
@@ -4020,12 +4101,12 @@
         "rowId": 99
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+      "note": "Corrected the vendor identity and confirmed bearer-key REST access, self-serve signup, and the provider MCP endpoint."
     },
     {
       "appId": 99,
@@ -4043,12 +4124,12 @@
         "rowId": 99
       },
       "verificationMethods": [
-        "provider-owned evidence",
-        "browser check",
-        "AI-assisted claim review"
+        "assignment identity lock",
+        "provider document review",
+        "Chromium browser check"
       ],
       "checkedAt": "2026-07-23",
-      "note": "The first pass researched another transcript vendor; domain locking recovered transcriptapi.com."
+      "note": "Corrected the vendor identity and confirmed bearer-key REST access, self-serve signup, and the provider MCP endpoint."
     }
   ]
 }

@@ -29,7 +29,7 @@ Rigorous, candid, operator-minded. The page should feel like a sharp internal de
 2. Make every claim one click away from its evidence.
 3. Show misses as product insight: identity locking and uncertainty are features.
 4. Reward a two-minute skim, then support a twenty-minute audit.
-5. Treat the agent and the human review loop as one system.
+5. Treat the agent and the independent review loop as one system; disclose where credentialed human access is still required.
 
 ## Accessibility & Inclusion
 

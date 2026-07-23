@@ -401,8 +401,8 @@
       "agentReviewReasons": [
         "no_official_identity_match"
       ],
-      "humanDecision": "Outreach first",
-      "finalConfidence": "Medium",
+      "humanDecision": "Build now",
+      "finalConfidence": "High",
       "evidence": [
         {
           "label": "Primary evidence",
@@ -416,12 +416,12 @@
       "agentReviewReasons": [
         "no_official_identity_match"
       ],
-      "humanDecision": "No public API",
-      "finalConfidence": "Medium",
+      "humanDecision": "Build with constraints",
+      "finalConfidence": "High",
       "evidence": [
         {
           "label": "Primary evidence",
-          "url": "https://www.ipayx.ai/"
+          "url": "https://www.ipayx.ai/developers"
         }
       ]
     },

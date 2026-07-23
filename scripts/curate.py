@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize human-reviewed decisions without mutating the raw agent artifact."""
+"""Materialize reviewer decisions without mutating the raw agent artifact."""
 
 from __future__ import annotations
 

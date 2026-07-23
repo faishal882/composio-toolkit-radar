@@ -124,7 +124,7 @@
       <section class="agent-section" id="agent" aria-labelledby="agent-title">
         <div class="section-heading inverse">
           <h2 id="agent-title">The agent is a research system, not a prompt</h2>
-          <p>Composio discovers and fetches. Deterministic gates reject weak evidence. A human resolves the cases where names, access gates, and “official” status cannot safely be inferred.</p>
+          <p>Composio discovers and fetches. Deterministic gates reject weak evidence. Independent source review resolves cases where names, access gates, and “official” status cannot safely be inferred.</p>
         </div>
 
         <div class="workflow" aria-label="Research workflow">
@@ -132,7 +132,7 @@
           <div class="workflow-arrow" aria-hidden="true">→</div>
           <div class="workflow-step"><span>2</span><strong>Discover</strong><p>Python runs parallel Composio Search calls with retries and atomic checkpoints.</p></div>
           <div class="workflow-arrow" aria-hidden="true">→</div>
-          <div class="workflow-step"><span>3</span><strong>Gate</strong><p>Entity locks and citation scores route weak evidence to human review.</p></div>
+          <div class="workflow-step"><span>3</span><strong>Gate</strong><p>Entity locks and citation scores route weak evidence to explicit review.</p></div>
           <div class="workflow-arrow" aria-hidden="true">→</div>
           <div class="workflow-step"><span>4</span><strong>Review</strong><p>Stratified sample plus an adversarial queue for collisions and gates.</p></div>
         </div>
@@ -152,42 +152,43 @@
         </div>
 
         <div class="human-needed">
-          <h3>Where the human earned their keep</h3>
-          <p>The first pass confidently researched the wrong entity for <strong>Sherlock</strong>, <strong>Paygent Connect</strong>, <strong>iPayX</strong>, and <strong>Mermaid CLI</strong>. It also mixed unrelated MCP citations into <strong>Close</strong> and <strong>Plain</strong>. Those failures produced two permanent controls: lock the vendor domain before classification, and never promote community MCP to “official.” <a href="artifacts/curation-manifest.json">Inspect all 42 routed decisions ↗</a></p>
+          <h3>Where the automated pass needed a reviewer</h3>
+          <p>The first pass confidently researched the wrong entity for <strong>Sherlock</strong>, <strong>Paygent Connect</strong>, <strong>iPayX</strong>, and <strong>Mermaid CLI</strong>. It also mixed unrelated MCP citations into <strong>Close</strong> and <strong>Plain</strong>. The independent review corrected those rows and produced two permanent controls: lock the vendor domain before classification, and never promote community MCP to “official.” Only Fanbasis still needs a credentialed human or vendor contact because its technical docs are behind login. <a href="artifacts/document-review.json">Inspect the completed source review ↗</a></p>
         </div>
       </section>
 
       <section class="verification" id="verification" aria-labelledby="verification-title">
         <div class="section-heading">
           <h2 id="verification-title">Accuracy moved because the loop changed</h2>
-          <p>Twenty apps × eight claims each. Ten were category-stratified; ten were deliberately adversarial. A claim scored only when provider-owned evidence supported it.</p>
+          <p>Twenty apps × eight claims each. Ten were category-stratified; ten were deliberately adversarial. Positive technical claims require provider-owned evidence; identity/category are brief-locked and verdicts follow from verified facts or explicit uncertainty.</p>
         </div>
 
-        <div class="accuracy-shift" aria-label="Verification-set support improved from 63.1 percent to 97.5 percent">
+        <div class="accuracy-shift" aria-label="Verification-set support improved from 63.1 percent to 98.1 percent">
           <div class="accuracy-before">
             <span>First pass</span>
             <strong>63.1%</strong>
             <small>101 / 160 supported claims</small>
           </div>
-          <div class="accuracy-arrow" aria-hidden="true">+34.4 pts →</div>
+          <div class="accuracy-arrow" aria-hidden="true">+35.0 pts →</div>
           <div class="accuracy-after">
             <span>After verification</span>
-            <strong>97.5%</strong>
-            <small>156 / 160 supported claims</small>
+            <strong>98.1%</strong>
+            <small>157 / 160 supported claims</small>
           </div>
         </div>
 
         <div class="cohort-scores" aria-label="Verification scores by cohort">
           <article><span>Category-stratified</span><strong>79/80 → 80/80</strong><p>A broad sanity sample: one app from each category.</p></article>
-          <article><span>Adversarial</span><strong>22/80 → 76/80</strong><p>Collision-prone and low-signal cases deliberately stress-tested.</p></article>
+          <article><span>Adversarial</span><strong>22/80 → 77/80</strong><p>Collision-prone and low-signal cases deliberately stress-tested.</p></article>
         </div>
 
         <div class="corrections" id="corrections"></div>
 
         <div class="verification-footnote">
           <strong>Why not claim 100%?</strong>
-          <p>Four claims remain medium-confidence across Fanbasis, Paygent Connect, and iPayX because public evidence is gated or absent. The final dataset says “unknown” or “contact sales” instead of inventing certainty.</p>
+          <p>Three Fanbasis claims remain unsupported because its provider documentation exposes only a login screen: authentication type, access route, and API shape. The build verdict stays “outreach first” instead of inventing certainty.</p>
           <a href="data/verification.json">Audit all 160 field judgments <span aria-hidden="true">↗</span></a>
+          <a href="artifacts/document-review.json">Read the document review <span aria-hidden="true">↗</span></a>
           <a href="artifacts/browser-verification.json">Inspect browser checks <span aria-hidden="true">↗</span></a>
           <a href="artifacts/research.raw.json">Compare the original first pass <span aria-hidden="true">↗</span></a>
         </div>

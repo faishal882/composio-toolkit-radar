@@ -131,6 +131,31 @@ def main() -> int:
     if any(not claim.get("sources") or not claim.get("verificationMethods") for claim in claims):
         errors.append("every verification claim needs sources and verification methods")
 
+    document_review_path = ROOT / "artifacts/document-review.json"
+    if not document_review_path.exists():
+        errors.append("document review artifact is missing")
+    else:
+        document_review = json.loads(document_review_path.read_text(encoding="utf-8"))
+        reviewed = document_review.get("reviews", [])
+        if {row.get("appId") for row in reviewed} != {sample.get("id") for sample in samples}:
+            errors.append("document review must cover the same 20 sampled apps")
+        if document_review.get("summary", {}).get("reviewedClaims") != len(claims):
+            errors.append("document review claim total differs from the verification ledger")
+        review_unsupported = {
+            (row.get("appId"), field)
+            for row in reviewed
+            for field in row.get("unsupportedFields", [])
+        }
+        ledger_unsupported = {
+            (claim.get("appId"), claim.get("field"))
+            for claim in claims
+            if not claim.get("finalSupported")
+        }
+        if review_unsupported != ledger_unsupported:
+            errors.append("document review unsupported fields differ from the verification ledger")
+        if any(not row.get("sources") or not row.get("note") for row in reviewed):
+            errors.append("every document review row needs sources and a reviewer note")
+
     if patterns.get("total") != len(rows):
         errors.append("patterns total differs from dataset")
     expected_access = Counter(row["access"] for row in rows)

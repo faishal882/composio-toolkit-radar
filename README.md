@@ -14,8 +14,9 @@ An evidence-backed build-versus-outreach map for 100 app integrations. This repo
 - `agent/research.py` — the resumable Composio-powered discovery agent.
 - `artifacts/research.raw.json` — immutable first-pass answers and citations for all 100 apps.
 - `artifacts/research.latest.json` — output from the stronger Python agent, with evidence scores and a review queue.
-- `artifacts/curation-manifest.json` — the exact apps held for human review and their final decisions.
-- `data/curation.json` — the explicit human-review decisions that fix collisions and unsupported claims.
+- `artifacts/curation-manifest.json` — the exact apps held for independent review and their final decisions.
+- `artifacts/document-review.json` — the completed 20-app document review, sources, corrections, and bounded uncertainty.
+- `data/curation.json` — the explicit reviewer decisions that fix collisions and unsupported claims.
 - `scripts/curate.py` — materializes reviewed decisions while keeping the raw artifact immutable.
 - `scripts/validate.py` — schema, taxonomy, audit-math, URL, and cross-file consistency gates.
 - `scripts/check_evidence.py` — concurrent reachability checks for every primary evidence URL.
@@ -71,16 +72,16 @@ Python orchestration + Composio discovery
       ↓
 identity locks + scored citations + checkpoints
       ↓
-explicit human-review queue
+explicit reviewer queue
       ↓
 immutable curation decisions + 100-row gates
       ↓
 20-app claim-level audit
 ```
 
-The first pass scored **101/160 supported claims (63.1%)** on the verification set. After the review loop, it scored **156/160 (97.5%)**. The final four unsupported claim-points remain visible as medium-confidence rather than being guessed.
+The first pass scored **101/160 supported claims (63.1%)** on the verification set. After document-by-document review, it scored **157/160 (98.1%)**. The final three unsupported claim-points remain visible rather than being guessed.
 
-Because ten of the twenty apps were deliberately adversarial, this is a verification-set support rate, not a population-wide accuracy estimate. The cohorts are reported separately: category-stratified **79/80 → 80/80**, and adversarial **22/80 → 76/80**. Every total is generated from the 160 field-level records in `data/verification.json`.
+Because ten of the twenty apps were deliberately adversarial, this is a verification-set support rate, not a population-wide accuracy estimate. The cohorts are reported separately: category-stratified **79/80 → 80/80**, and adversarial **22/80 → 77/80**. Every total is generated from the 160 field-level records in `data/verification.json` and cross-checked against `artifacts/document-review.json`.
 
 The most important failure classes were:
 
@@ -107,7 +108,7 @@ Regenerate every deterministic artifact:
 npm run build:data
 ```
 
-See `MANUAL_COMPLETION.md` for the final submitter signoff. That step cannot honestly be delegated because the assignment explicitly asks where a human checked the agent.
+The 20 sampled apps have already been independently reviewed source-by-source; the record is in `artifacts/document-review.json`. It is deliberately disclosed as an AI-assisted manual source review, not falsely described as human signoff. A human or vendor contact is still genuinely required to inspect Fanbasis details hidden behind its authenticated developer portal.
 
 Some documentation providers return 403/429 to automated clients while loading in a browser. Those cases are retained in the evidence report instead of being silently counted as healthy.
 

@@ -1894,18 +1894,18 @@
     "auth": [
       "Bearer API key"
     ],
-    "access": "Contact sales",
+    "access": "Self-serve",
     "api": "REST + Webhooks",
     "mcp": "None found",
-    "verdict": "Outreach first",
-    "blocker": "Docs are not publicly indexed; commercial onboarding is required",
+    "verdict": "Build now",
+    "blocker": "Production payments still require merchant onboarding and compliance checks",
     "evidence": [
       {
         "label": "Primary evidence",
         "url": "https://www.gopaygent.com/"
       }
     ],
-    "confidence": "Medium",
+    "confidence": "High",
     "checkedAt": "2026-07-23"
   },
   {
@@ -1914,20 +1914,20 @@
     "category": "Finance & Fintech",
     "description": "Institutional foreign-exchange audit and verification",
     "auth": [
-      "Unknown"
+      "Bearer API key"
     ],
-    "access": "Contact sales",
-    "api": "No public API",
-    "mcp": "None found",
-    "verdict": "No public API",
-    "blocker": "No public developer documentation or credential path was located",
+    "access": "Plan/admin",
+    "api": "REST + Webhooks",
+    "mcp": "Official",
+    "verdict": "Build with constraints",
+    "blocker": "Production API access starts on a paid developer plan",
     "evidence": [
       {
         "label": "Primary evidence",
-        "url": "https://www.ipayx.ai/"
+        "url": "https://www.ipayx.ai/developers"
       }
     ],
-    "confidence": "Medium",
+    "confidence": "High",
     "checkedAt": "2026-07-23"
   },
   {

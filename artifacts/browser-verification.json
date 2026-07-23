@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-07-22T21:43:09.148556Z",
+  "checkedAt": "2026-07-23T01:00:41.202313Z",
   "method": "gstack browse persistent Chromium; page load plus deterministic technical-token presence check",
   "scope": "This proves browser accessibility and technical signals, not semantic support by itself; claim support remains in the human-readable ledger.",
   "summary": {
@@ -179,7 +179,7 @@
     {
       "appId": 81,
       "app": "Stripe",
-      "url": "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia",
+      "url": "https://docs.stripe.com/api/authentication",
       "loaded": true,
       "expectedTokens": [
         "oauth",
@@ -188,7 +188,7 @@
         "mcp"
       ],
       "title": "Authentication | Stripe API Reference",
-      "finalUrl": "https://docs.stripe.com/api/authentication?api-version=2026-04-22.dahlia",
+      "finalUrl": "https://docs.stripe.com/api/authentication",
       "textChars": 22511,
       "tokenHits": {
         "oauth": false,
@@ -209,7 +209,7 @@
         "mcp"
       ],
       "title": "Just a moment...",
-      "finalUrl": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API",
+      "finalUrl": "https://help.otter.ai/hc/en-us/articles/36130822688279-Otter-ai-Public-API?__cf_chl_rt_tk=.sciYuKOxPQKnO2R.vBYmk0WukPgdH4sSE6KeRuhPFs-1784768427-1.0.1.1-oTPT0Pz_itL6Icfkf37pLLmwV8MPj7sWy_jhwiWSNtI",
       "textChars": 0,
       "tokenHits": {
         "oauth": false,
@@ -266,7 +266,7 @@
       ],
       "title": "Public API",
       "finalUrl": "https://developer.systeme.io/reference/api",
-      "textChars": 8420,
+      "textChars": 8406,
       "tokenHits": {
         "api key": true,
         "rest": true,
@@ -302,7 +302,7 @@
       ],
       "title": "GitHub - sherlock-project/sherlock: Hunt down social media accounts by username across social networks · GitHub",
       "finalUrl": "https://github.com/sherlock-project/sherlock",
-      "textChars": 5081,
+      "textChars": 5077,
       "tokenHits": {
         "cli": true
       }
@@ -329,13 +329,23 @@
     {
       "appId": 85,
       "app": "iPayX",
-      "url": "https://www.ipayx.ai/",
+      "url": "https://www.ipayx.ai/developers",
       "loaded": true,
-      "expectedTokens": [],
-      "title": "iPayX Protocol — World's First MCP-Native FX Audit Engine",
-      "finalUrl": "https://www.ipayx.ai/",
-      "textChars": 5527,
-      "tokenHits": {}
+      "expectedTokens": [
+        "api key",
+        "rest",
+        "webhook",
+        "mcp"
+      ],
+      "title": "FX Audit API & MCP — Developer Documentation — iPayX",
+      "finalUrl": "https://www.ipayx.ai/developers",
+      "textChars": 9457,
+      "tokenHits": {
+        "api key": true,
+        "rest": true,
+        "webhook": true,
+        "mcp": true
+      }
     },
     {
       "appId": 91,
